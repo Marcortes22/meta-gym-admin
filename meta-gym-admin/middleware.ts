@@ -35,33 +35,31 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Check if user is accessing protected routes
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/register') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/_next') &&
-    !request.nextUrl.pathname.startsWith('/api') &&
-    request.nextUrl.pathname !== '/'
-  ) {
-    // No user, redirect to login page
+  // Define protected and public routes
+  const publicRoutes = ['/login', '/register', '/auth']
+  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+  const isDashboardRoute = request.nextUrl.pathname.startsWith('/dashboard')
+  const isHomeRoute = request.nextUrl.pathname === '/'
+
+  // Check if user is accessing protected routes without authentication
+  if (!user && (isDashboardRoute || (!isPublicRoute && !isHomeRoute))) {
+    console.log('🔒 Unauthenticated user trying to access protected route:', request.nextUrl.pathname)
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // If user is logged in and trying to access auth pages, redirect to dashboard
-  if (
-    user &&
-    (request.nextUrl.pathname.startsWith('/login') ||
-     request.nextUrl.pathname.startsWith('/register') ||
-     request.nextUrl.pathname === '/')
-  ) {
+  // If user is logged in and trying to access auth pages or home, redirect to dashboard
+  if (user && (isPublicRoute || isHomeRoute)) {
+    console.log('✅ Authenticated user redirecting to dashboard from:', request.nextUrl.pathname)
     const url = request.nextUrl.clone()
-    // Redirect to a default gym dashboard or gym selection page
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
+  }
+
+  // Log authentication status for debugging
+  if (user && isDashboardRoute) {
+    console.log('✅ Authenticated user accessing dashboard:', user.email)
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

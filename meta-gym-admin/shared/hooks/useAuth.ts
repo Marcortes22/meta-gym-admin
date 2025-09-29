@@ -12,12 +12,20 @@ export function useUser() {
   const supabase = useSupabase()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+    
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setLoading(false)
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error('Error getting user:', error)
+      } finally {
+        setLoading(false)
+      }
     }
 
     getUser()
@@ -32,32 +40,76 @@ export function useUser() {
     return () => subscription.unsubscribe()
   }, [supabase])
 
-  return { user, loading }
+  // No renderizar nada hasta que esté mounted para evitar hidratación
+  if (!mounted) {
+    return { user: null, loading: true, setUser: () => {} }
+  }
+
+  return { user, loading, setUser }
 }
 
 export function useAuth() {
   const supabase = useSupabase()
-  const { user, loading } = useUser()
+  const { user, loading, setUser } = useUser()
 
   const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { data, error }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      
+      if (error) {
+        console.error('Sign in error:', error)
+        return { data: null, error }
+      }
+      
+      return { data, error: null }
+    } catch (error) {
+      console.error('Sign in catch error:', error)
+      return { data: null, error: error as Error }
+    }
   }
 
   const signUp = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    return { data, error }
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      return { data, error }
+    } catch (error) {
+      console.error('Sign up error:', error)
+      return { data: null, error: error as Error }
+    }
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    return { error }
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (!error) {
+        setUser(null)
+      }
+      return { error }
+    } catch (error) {
+      console.error('Sign out error:', error)
+      return { error: error as Error }
+    }
+  }
+
+  const checkAuth = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser()
+      if (error) {
+        console.error('Check auth error:', error)
+        return null
+      }
+      setUser(user)
+      return user
+    } catch (error) {
+      console.error('Check auth catch error:', error)
+      return null
+    }
   }
 
   return {
@@ -66,5 +118,6 @@ export function useAuth() {
     signIn,
     signUp,
     signOut,
+    checkAuth,
   }
 }
