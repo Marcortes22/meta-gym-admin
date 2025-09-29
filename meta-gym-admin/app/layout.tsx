@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import QueryProvider from "@/shared/providers/query-provider";
 
 export const metadata: Metadata = {
   title: "Meta Gym Admin",
@@ -13,8 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body suppressHydrationWarning={true}>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
