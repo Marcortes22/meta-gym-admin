@@ -5,7 +5,6 @@ export const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-// Export a function to create client for consistency
 export const createClient = () => supabase
 
 // Default export

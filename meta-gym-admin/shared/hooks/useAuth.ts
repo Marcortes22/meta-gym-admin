@@ -40,7 +40,6 @@ export function useUser() {
     return () => subscription.unsubscribe()
   }, [supabase])
 
-  // No renderizar nada hasta que esté mounted para evitar hidratación
   if (!mounted) {
     return { user: null, loading: true, setUser: () => {} }
   }

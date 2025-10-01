@@ -110,7 +110,6 @@ export function LoginForm() {
             type="submit"
             className="w-full"
             disabled={isFormLoading}
-            loading={isFormLoading}
           >
             {isFormLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </Button>

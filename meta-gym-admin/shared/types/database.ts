@@ -1,11 +1,10 @@
-// Base types for database entities
+
 export interface BaseEntity {
   id: string
   created_at: string
   updated_at: string
 }
 
-// Meta Gym entity - Tabla principal de gimnasios
 export interface MetaGym extends BaseEntity {
   auth_user_id: string // Referencia a auth.users.id
   name: string
@@ -13,7 +12,7 @@ export interface MetaGym extends BaseEntity {
   phone?: string
 }
 
-// Gym Profile entity - Perfiles detallados de gimnasios
+
 export interface GymProfile extends BaseEntity {
   tenant_id: string // Referencia a tenant.id
   nombre: string
@@ -26,16 +25,14 @@ export interface GymProfile extends BaseEntity {
   currency?: string
 }
 
-// Tenant entity - Inquilinos/Suscripciones
 export interface Tenant extends BaseEntity {
-  meta_gym_id: string // Referencia a meta_gym.id
-  plan_id: string // Referencia a meta_gym_plans.id
+  meta_gym_id: string 
+  plan_id: string 
   start_date: string
   end_date?: string
   status: string
 }
 
-// Meta Gym Plans entity - Planes de suscripción
 export interface MetaGymPlan extends BaseEntity {
   name: string
   price: number
@@ -45,7 +42,6 @@ export interface MetaGymPlan extends BaseEntity {
   is_active: boolean
 }
 
-// Input types for creation
 export interface CreateMetaGymInput {
   auth_user_id: string
   name: string
@@ -82,13 +78,12 @@ export interface CreateMetaGymPlanInput {
   is_active?: boolean
 }
 
-// Update types
 export type UpdateMetaGymInput = Partial<Omit<CreateMetaGymInput, 'auth_user_id'>>
 export type UpdateGymProfileInput = Partial<Omit<CreateGymProfileInput, 'tenant_id'>>
 export type UpdateTenantInput = Partial<Omit<CreateTenantInput, 'meta_gym_id'>>
 export type UpdateMetaGymPlanInput = Partial<CreateMetaGymPlanInput>
 
-// Filter and query types
+
 export interface GymProfileFilters {
   tenant_id?: string
   slug?: string
@@ -107,7 +102,6 @@ export interface MetaGymPlanFilters {
   price_max?: number
 }
 
-// Common response types
 export interface PaginatedResponse<T> {
   data: T[]
   count: number

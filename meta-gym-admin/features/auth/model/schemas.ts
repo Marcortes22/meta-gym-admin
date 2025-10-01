@@ -14,7 +14,6 @@ export const loginSchema = z.object({
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
-// Schema para Register
 export const registerSchema = z.object({
   name: z
     .string()
