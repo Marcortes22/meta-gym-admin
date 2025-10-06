@@ -1,5 +1,12 @@
 'use client';
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import {
+  KeyRound,
+  Home,
+  Inbox,
+  CalendarPlus,
+  Settings,
+  Landmark,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -21,22 +28,22 @@ const items = [
     icon: Home,
   },
   {
-    title: 'Register new user',
+    title: 'Requests',
     url: '#',
-    icon: Inbox,
+    icon: CalendarPlus,
   },
   {
-    title: 'Calendar',
+    title: 'Tokens',
     url: '#',
-    icon: Calendar,
+    icon: KeyRound,
   },
   {
-    title: 'Search',
+    title: 'Tenants & Gyms',
     url: '#',
-    icon: Search,
+    icon: Landmark,
   },
   {
-    title: 'Settings',
+    title: 'Administration',
     url: '#',
     icon: Settings,
   },

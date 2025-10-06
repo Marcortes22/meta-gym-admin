@@ -18,7 +18,7 @@ export default function LogOutButton() {
 
   return (
     <Button variant="destructive" onClick={handleLogout}>
-      Cerrar sesión
+      Log Out
     </Button>
   );
 }
