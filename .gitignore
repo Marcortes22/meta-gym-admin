@@ -43,3 +43,12 @@ next-env.d.ts
 # Markdowns
 AGENTS.md
 SUPABASE_SETUP.md
+
+# Supabase
+.branches
+.temp
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local
