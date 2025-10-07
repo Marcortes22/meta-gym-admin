@@ -1,8 +1,14 @@
+import { getSupabaseCredentials } from '@/shared/lib/supabase-config';
+import { SupabaseEnvironment } from '@/shared/types/enviroment';
 import { createBrowserClient } from '@supabase/ssr'
 
+
+
+const { url, anonKey } = getSupabaseCredentials();
+
 export const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  url,
+  anonKey,
 )
 
 export const createClient = () => supabase
