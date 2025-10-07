@@ -1,5 +1,5 @@
 import { getSupabaseCredentials } from '@/shared/lib/supabase-config';
-import { SupabaseEnvironment } from '@/shared/types/enviroment';
+
 import { createBrowserClient } from '@supabase/ssr'
 
 
