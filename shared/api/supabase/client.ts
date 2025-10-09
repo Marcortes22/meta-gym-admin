@@ -2,8 +2,6 @@ import { getSupabaseCredentials } from '@/shared/lib/supabase-config';
 
 import { createBrowserClient } from '@supabase/ssr'
 
-
-
 const { url, anonKey } = getSupabaseCredentials();
 
 export const supabase = createBrowserClient(

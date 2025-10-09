@@ -1,4 +1,3 @@
-import LogOutButton from '@/modules/auth/components/LogOutButton';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,7 +5,7 @@ export const metadata: Metadata = {
   description: 'Panel de administración de MetaGym',
 };
 
-export default function DashboardPage() {
+export default function HomePage() {
   return (
     <div className="space-y-6 ">
       <div>

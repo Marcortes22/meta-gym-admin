@@ -39,8 +39,8 @@ export function useLoginForm() {
       // Revalidar el estado de autenticación
       await checkAuth();
 
-      // Redirigir al dashboard
-      router.push('/dashboard');
+     
+      router.push('/');
       router.refresh();
     } catch (err) {
       console.error('Login error:', err);

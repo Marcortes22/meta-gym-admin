@@ -4,9 +4,10 @@ import { Button } from '@/shared/components/ui/button';
 import { useRouter } from 'next/navigation';
 
 export default function LogOutButton() {
+  const router = useRouter();
+
   const handleLogout = async () => {
     const supabase = createClient();
-    const router = useRouter();
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error('Error al cerrar sesión:', error);
@@ -16,9 +17,5 @@ export default function LogOutButton() {
     }
   };
 
-  return (
-    <Button variant="destructive" onClick={handleLogout}>
-      Log Out
-    </Button>
-  );
+  return <Button onClick={handleLogout}>Sign out</Button>;
 }

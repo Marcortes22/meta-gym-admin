@@ -3,21 +3,91 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
-import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+import "@supabase/functions"
+import { createClient } from 'npm:@supabase/supabase-js@2'
 
 console.log("Hello from Functions!")
 
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 Deno.serve(async (req) => {
-  const { name } = await req.json()
-  const data = {
-    message: `Hello ${name}!`,
+
+ 
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+try{
+
+   if (req.method !== 'POST') {
+      return new Response(
+        JSON.stringify({ error: 'Method not allowed, use POST' }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 405 
+        }
+      );
+    }
+
+    // Extraer datos del cuerpo de la solicitud
+    const requestData = await req.json().catch(() => ({}));
+    const { name } = requestData;
+
+    // Validar que se proporcionó un nombre
+    if (!name || typeof name !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'A valid name is required in the request body' }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400 
+        }
+      );
+    }
+
+   const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    // Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+    {
+      global: {
+        headers: { Authorization: req.headers.get('Authorization')! },
+      },
+    }
+  );
+  
+
+
+  
+    const { data, error } = await supabase
+      .from('roles')
+      .insert([
+        { name: name },
+      ])
+      .select()
+
+  if (error) {
+   throw error
   }
 
   return new Response(
     JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
+    { headers: {...corsHeaders, "Content-Type": "application/json" } },
   )
+
+
+    } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 400,
+    })
+  }
 })
+
+
 
 /* To invoke locally:
 
