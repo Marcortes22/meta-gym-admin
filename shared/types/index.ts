@@ -14,3 +14,6 @@ export * from './global-user.types';
 export * from './gym.types';
 export * from './token.types';
 export * from './gym-request.types';
+export * from './tenant.types';
+export * from './subscription.types';
+export * from './user.types';

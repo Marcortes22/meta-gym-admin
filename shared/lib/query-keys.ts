@@ -25,10 +25,14 @@ export const queryKeys = {
     detail: (id: string) => [...queryKeys.requests.all, 'detail', id] as const,
   },
 
-  // Tokens queries
-  tokens: {
-    all: ['tokens'] as const,
-    list: () => [...queryKeys.tokens.all, 'list'] as const,
-    detail: (id: string) => [...queryKeys.tokens.all, 'detail', id] as const,
+  // Gym Requests (alias para solicitudes)
+  gymRequests: {
+    all: ['gym-requests'] as const,
+    byState: (state: string) => [...queryKeys.gymRequests.all, 'state', state] as const,
+    detail: (id: string) => [...queryKeys.gymRequests.all, 'detail', id] as const,
   },
 } as const;
+
+// Export aliases
+export const gymRequestKeys = queryKeys.gymRequests;
+

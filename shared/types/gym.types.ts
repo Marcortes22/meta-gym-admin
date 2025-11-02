@@ -1,32 +1,47 @@
 import { BaseEntity } from './common.types';
 
 /**
- * Gimnasio registrado en Meta Gym
+ * Gimnasio registrado en Meta Gym (pertenece a un tenant)
  */
 export interface Gym extends BaseEntity {
+  // Relación con tenant
+  tenantId: string;
+  ownerId: string; // UID del usuario administrador en Firebase Auth
+  
+  // Información básica
+  code: string; // Código único del gym (ej: GYMDEMO001)
   name: string;
   email: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  country?: string;
+  phone: string;
+  
+  // Dirección
+  address: string;
+  city: string;
+  country: string;
+  
+  // Estado
+  is_active: boolean;
+  createdAt: Date;
+  
+  // Campos opcionales para compatibilidad
   logoUrl?: string;
-  status: 'pending' | 'active' | 'inactive' | 'suspended';
-  ownerId: string; // Referencia al usuario dueño
+  status?: 'pending' | 'active' | 'inactive' | 'suspended';
 }
 
 /**
  * Input para crear un gimnasio
  */
 export interface CreateGymInput {
+  tenantId: string;
+  ownerId: string;
+  code: string;
   name: string;
   email: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  country?: string;
-  logoUrl?: string;
-  ownerId: string;
+  phone: string;
+  address: string;
+  city: string;
+  country: string;
+  is_active: boolean;
 }
 
 /**
