@@ -40,13 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Markdowns
-AGENTS.md
-SUPABASE_SETUP.md
-
-# Supabase
-.branches
-.temp
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+firebase-debug.*.log
 
 # dotenvx
 .env.keys

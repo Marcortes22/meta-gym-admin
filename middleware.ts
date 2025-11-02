@@ -1,65 +1,54 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
-import { SupabaseEnvironment } from './shared/types/enviroment'
-import { getSupabaseCredentials } from './shared/lib/supabase-config';
+import { NextResponse, type NextRequest } from 'next/server';
 
+/**
+ * Firebase Authentication Middleware
+ * Note: Firebase Auth verification in middleware requires the Firebase Admin SDK
+ * For now, we'll check for the presence of auth cookies set by Firebase client
+ */
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+  const response = NextResponse.next({
     request,
-  })
+  });
 
+  // Get the session cookie set by Firebase Auth
+  const sessionCookie = request.cookies.get('__session')?.value;
 
-   const { url, anonKey } = getSupabaseCredentials();
+  // Define public routes that don't require authentication
+  const publicRoutes = ['/login'];
+  const isPublicRoute = publicRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+  const isHomeRoute = request.nextUrl.pathname === '/';
 
-  const supabase = createServerClient(
-    url,
-    anonKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-
-  const publicRoutes = ['/login']
-  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
-  const isHomeRoute = request.nextUrl.pathname === '/'
-  
-
-  if (!user && !isPublicRoute) {
-    console.log('🔒 Redirigiendo a login:', request.nextUrl.pathname)
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+  // If user is not authenticated and trying to access protected route
+  if (!sessionCookie && !isPublicRoute) {
+    console.log('🔒 Redirigiendo a login:', request.nextUrl.pathname);
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
   }
 
-
-
-  if (user && isHomeRoute) {
-    console.log('✅ Usuario autenticado accediendo al home:', user.email)
+  // If user is authenticated and accessing home, redirect to dashboard
+  if (sessionCookie && isHomeRoute) {
+    console.log('✅ Usuario autenticado redirigiendo a dashboard');
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
+    return NextResponse.redirect(url);
   }
 
-  return supabaseResponse
+  // If user is authenticated and trying to access login/register, redirect to dashboard
+  if (sessionCookie && isPublicRoute) {
+    console.log('✅ Usuario autenticado redirigiendo a dashboard');
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
+    return NextResponse.redirect(url);
+  }
+
+  return response;
 }
 
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-}
+};

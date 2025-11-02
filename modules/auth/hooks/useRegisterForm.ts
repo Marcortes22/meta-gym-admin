@@ -1,18 +1,17 @@
-import { createClient } from '@/shared/api/supabase/client';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterFormData, registerSchema } from '../models/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { updateProfile } from 'firebase/auth';
 
 export function useRegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
-  const { checkAuth } = useAuth();
-  const supabase = createClient();
+  const { signUp, checkAuth } = useAuth();
 
   const {
     register,
@@ -28,34 +27,27 @@ export function useRegisterForm() {
       setError(null);
       setSuccess(false);
 
-      const { error: authError, data: authData } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            name: data.name,
-          },
-        },
-      });
+      const { data: authData, error: authError } = await signUp(
+        data.email,
+        data.password
+      );
 
       if (authError) {
-        if (authError.message.includes('already registered')) {
-          setError('Este email ya está registrado');
-        } else {
-          setError('Error al crear la cuenta: ' + authError.message);
-        }
+        const errorMessage = getFirebaseErrorMessage(authError.code);
+        setError(errorMessage);
         return;
       }
 
-      // Si el registro fue exitoso pero necesita confirmación
-      if (authData.user && !authData.session) {
-        setSuccess(true);
-        return;
-      }
+      // Update user profile with name
+      if (authData?.user) {
+        await updateProfile(authData.user, {
+          displayName: data.name,
+        });
 
-      // Si el registro fue exitoso y ya está autenticado
-      if (authData.session) {
         await checkAuth();
+        setSuccess(true);
+        
+        // Redirect to dashboard
         router.push('/dashboard');
         router.refresh();
       }
@@ -76,6 +68,21 @@ export function useRegisterForm() {
     error,
     success,
     onSubmit,
-    errors
+    errors,
   };
+}
+
+function getFirebaseErrorMessage(errorCode: string): string {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'Este email ya está registrado';
+    case 'auth/invalid-email':
+      return 'El correo electrónico no es válido';
+    case 'auth/operation-not-allowed':
+      return 'Operación no permitida';
+    case 'auth/weak-password':
+      return 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres';
+    default:
+      return 'Error al crear la cuenta';
+  }
 }

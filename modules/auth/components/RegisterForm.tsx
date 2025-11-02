@@ -16,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card';
-import { createClient } from '@/shared/api/supabase/client';
-import { useAuth } from '@/shared/hooks/useAuth';
 import Link from 'next/link';
 import { useRegisterForm } from '../hooks/useRegisterForm';
 
