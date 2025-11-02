@@ -36,7 +36,7 @@ export async function createTenant(input: CreateTenantInput): Promise<void> {
  * Crear una nueva suscripción en Firestore
  */
 export async function createSubscription(input: CreateSubscriptionInput): Promise<string> {
-  const subscriptionsRef = collection(db, 'subscriptions');
+  const subscriptionsRef = collection(db, 'tenant_subscriptions');
   const newSubscriptionRef = doc(subscriptionsRef);
   
   await setDoc(newSubscriptionRef, {
