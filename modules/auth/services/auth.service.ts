@@ -65,6 +65,44 @@ export async function loginUser(
 }
 
 /**
+ * Elimina la cookie de sesión
+ */
+export function clearSessionCookie(): void {
+  document.cookie = '__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+}
+
+/**
+ * Maneja el proceso completo de logout
+ */
+export async function logoutUser(
+  signOut: () => Promise<{ error: any }>
+): Promise<AuthResult> {
+  try {
+    // 1. Cerrar sesión en Firebase Auth
+    const { error } = await signOut();
+    
+    if (error) {
+      console.error('Error al cerrar sesión:', error);
+      return {
+        success: false,
+        error: 'Error al cerrar sesión',
+      };
+    }
+
+    // 2. Eliminar cookie de sesión
+    clearSessionCookie();
+
+    return { success: true };
+  } catch (error) {
+    console.error('Logout service error:', error);
+    return {
+      success: false,
+      error: 'Error inesperado al cerrar sesión',
+    };
+  }
+}
+
+/**
  * Mapea códigos de error de Firebase a mensajes legibles
  */
 function getFirebaseErrorMessage(errorCode: string): string {

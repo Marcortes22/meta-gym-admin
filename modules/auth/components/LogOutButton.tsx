@@ -1,22 +1,34 @@
 'use client';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { Button } from '@/shared/components/ui/button';
-import { useRouter } from 'next/navigation';
+import { useLogout } from '../hooks/useLogout';
+import { Loader2 } from 'lucide-react';
 
 export default function LogOutButton() {
-  const router = useRouter();
-  const { signOut } = useAuth();
+  const { logout, isLoading, error } = useLogout();
 
   const handleLogout = async () => {
-    const { error } = await signOut();
-    if (error) {
-      console.error('Error al cerrar sesión:', error);
-    } else {
-      // Forzar recarga completa para que el middleware se ejecute
-      router.push('/login');
-      router.refresh();
-    }
+    await logout();
   };
 
-  return <Button onClick={handleLogout}>Sign out</Button>;
+  if (error) {
+    console.error('Logout error:', error);
+  }
+
+  return (
+    <Button 
+      onClick={handleLogout} 
+      disabled={isLoading}
+      variant="ghost"
+      className="w-full justify-start px-0"
+    >
+      {isLoading ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Cerrando sesión...
+        </>
+      ) : (
+        'Cerrar Sesión'
+      )}
+    </Button>
+  );
 }
