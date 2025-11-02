@@ -23,6 +23,10 @@ export interface User extends BaseEntity {
   phone: string;
   dateOfBirth: string;
   
+  // Relaciones
+  gymId: string;
+  tenantId: string;
+  
   // Roles
   roles: UserRole[];
   
@@ -50,6 +54,8 @@ export interface CreateAdminUserInput {
   phone: string;
   dateOfBirth?: string;
   roles: UserRole[];
+  gymId: string;
+  tenantId: string;
 }
 
 /**

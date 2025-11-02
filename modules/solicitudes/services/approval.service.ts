@@ -161,6 +161,8 @@ export async function approveGymRequestService(
       phone: request.admin_phone,
       dateOfBirth: '',
       roles: adminRoles,
+      gymId: gymId,
+      tenantId: tenantId,
     });
     console.log('✅ Usuario admin creado en users collection');
 
