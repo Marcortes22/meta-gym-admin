@@ -30,6 +30,7 @@ import {
 } from './dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 import { usePathname } from 'next/navigation';
+import { useCurrentAdmin } from '@/modules/auth/hooks/useCurrentAdmin';
 
 const items = [
   {
@@ -62,6 +63,7 @@ const items = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const pathname = usePathname();
+  const { data: adminUser, isLoading } = useCurrentAdmin();
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border/40 bg-[#0f0f10]">
@@ -130,7 +132,9 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
                   <User2 className="h-5 w-5" />
-                  <span className="font-medium">Admin User</span>
+                  <span className="font-medium">
+                    {isLoading ? 'Cargando...' : adminUser?.name || 'Admin'}
+                  </span>
                   <ChevronUp className="ml-auto h-4 w-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
