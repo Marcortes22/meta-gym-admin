@@ -1,4 +1,5 @@
 import { UserCredential } from 'firebase/auth';
+import { GlobalUser } from '@/shared/types';
 
 /**
  * Interface para el resultado de operaciones de autenticación
@@ -9,16 +10,10 @@ export interface AuthResult {
 }
 
 /**
- * Interface para el usuario administrador en Firestore
+ * Alias para usuario administrador
+ * @deprecated Usar GlobalUser de shared/types en su lugar
  */
-export interface AdminUser {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin';
-  createdAt: Date;
-  updatedAt?: Date;
-}
+export type AdminUser = GlobalUser;
 
 /**
  * Interface para el resultado de signIn/signUp

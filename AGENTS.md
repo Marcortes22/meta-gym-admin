@@ -103,6 +103,45 @@ features/
 - Use Tailwind's design tokens for consistency.
 - Implement dark mode support using `next-themes`.
 
+## Accessibility and Color Contrast (WCAG 2.1 AA)
+- **ALWAYS ensure sufficient color contrast ratios:**
+  - Normal text (< 18pt): minimum 4.5:1 contrast ratio
+  - Large text (≥ 18pt or 14pt bold): minimum 3:1 contrast ratio
+  - Interactive elements (buttons, links): minimum 3:1 against background
+- **Color palette with guaranteed accessibility:**
+  - Primary background: `#0f0f10` (near black)
+  - Primary accent: `#fe6b24` (orange) - use with white text
+  - Text hierarchy for dark backgrounds:
+    - Primary text: `white` or `gray-50` (highest contrast)
+    - Secondary text: `gray-200` (high contrast)
+    - Tertiary text: `gray-300` (medium-high contrast)
+    - Muted text: `gray-400` (minimum acceptable for body text)
+  - Interactive elements:
+    - Buttons: Always use solid backgrounds with white text
+    - Outline buttons: Use `border-gray-500` or lighter, never `border-gray-700` or darker
+    - Icon buttons: Use `text-white` or `text-gray-100` minimum
+  - Hover states: Always increase contrast, never decrease
+    - Example: `text-gray-300 hover:text-white` ✅
+    - Example: `text-white hover:text-gray-400` ❌
+- **Testing contrast:**
+  - Use browser DevTools or online contrast checkers
+  - Test with actual content, not placeholders
+  - Consider color blindness (use icons + text, not color alone)
+- **Semantic colors with proper contrast:**
+  - Success: `text-green-400` on `bg-green-500/10` with `border-green-500/30`
+  - Error: `text-red-400` on `bg-red-500/10` with `border-red-500/30`
+  - Warning: `text-yellow-400` on `bg-yellow-500/10` with `border-yellow-500/30`
+  - Info: `text-blue-400` on `bg-blue-500/10` with `border-blue-500/30`
+- **Icons and interactive elements:**
+  - Minimum size: 24x24px for touch targets (44x44px preferred)
+  - Icons should be `h-5 w-5` (20px) minimum in buttons
+  - Always pair icons with text labels for clarity
+  - Use `aria-label` for icon-only buttons
+- **Focus states:**
+  - Always visible focus indicators with 2px minimum outline
+  - Use `focus-visible:ring-2 focus-visible:ring-[#fe6b24]`
+  - Never use `outline-none` without custom focus styles
+
 ## Performance Optimization
 - Minimize 'use client' directive; favor React Server Components (RSC).
 - Use 'use client' only for:
