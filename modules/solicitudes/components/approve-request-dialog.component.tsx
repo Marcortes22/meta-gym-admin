@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GymRequest } from '@/shared/types';
@@ -21,6 +20,7 @@ import {
   type ApproveRequestFormData,
 } from '@/modules/solicitudes/models/schemas';
 import { CheckCircleIcon, Loader2Icon, KeyIcon, MailIcon } from 'lucide-react';
+import { useToast } from '@/shared/hooks/use-toast';
 
 interface ApproveRequestDialogProps {
   request: GymRequest | null;
@@ -33,8 +33,8 @@ export function ApproveRequestDialog({
   open,
   onOpenChange,
 }: ApproveRequestDialogProps) {
-  const [showSuccess, setShowSuccess] = useState(false);
   const approveRequest = useApproveRequest();
+  const { toast } = useToast();
 
   const {
     register,
@@ -52,7 +52,6 @@ export function ApproveRequestDialog({
 
   const handleClose = () => {
     reset();
-    setShowSuccess(false);
     onOpenChange(false);
   };
 
@@ -66,37 +65,24 @@ export function ApproveRequestDialog({
         adminPassword: data.adminPassword,
       });
 
-      setShowSuccess(true);
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
+      toast({
+        variant: 'success',
+        title: 'Request Approved!',
+        description: `Gym ${request.gym_name} has been created successfully`,
+      });
+      
+      handleClose();
     } catch (error) {
-      console.error('Error al aprobar solicitud:', error);
+      console.error('Error approving request:', error);
+      toast({
+        variant: 'error',
+        title: 'Approval Failed',
+        description: 'Could not approve the request',
+      });
     }
   };
 
   if (!request) return null;
-
-  // Success state
-  if (showSuccess) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-md bg-[#0f0f10] border-gray-800 text-white">
-          <div className="flex flex-col items-center justify-center py-8 space-y-4">
-            <div className="p-4 bg-green-500/20 rounded-full">
-              <CheckCircleIcon className="h-16 w-16 text-green-400" />
-            </div>
-            <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-white">¡Solicitud Aprobada!</h3>
-              <p className="text-gray-400">
-                El gimnasio ha sido creado exitosamente
-              </p>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

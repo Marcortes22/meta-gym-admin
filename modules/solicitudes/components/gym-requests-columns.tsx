@@ -66,7 +66,7 @@ export function createColumns(
     },
     {
       accessorKey: 'gym_name',
-      header: 'TENANT NAME',
+      header: 'GYM NAME',
       cell: ({ row }) => (
         <div>
           <div className="font-semibold text-white">{row.original.gym_name}</div>
@@ -93,9 +93,9 @@ export function createColumns(
         return (
           <div className="text-sm text-gray-200">
             {date instanceof Date
-              ? date.toLocaleDateString('es-ES', {
-                  day: '2-digit',
+              ? date.toLocaleDateString('en-US', {
                   month: '2-digit',
+                  day: '2-digit',
                   year: 'numeric',
                 })
               : 'N/A'}
@@ -113,17 +113,23 @@ export function createColumns(
           approved: 'bg-green-500/15 text-green-400 border border-green-500/30',
           rejected: 'bg-red-500/15 text-red-400 border border-red-500/30',
         };
+        
+        const stateLabels = {
+          pending: 'Pending',
+          approved: 'Approved',
+          rejected: 'Rejected',
+        };
 
         return (
           <Badge className={`${variants[state]} font-semibold`}>
-            {state.charAt(0).toUpperCase() + state.slice(1)}
+            {stateLabels[state]}
           </Badge>
         );
       },
     },
     {
       id: 'actions',
-      header: 'ACTION',
+      header: 'ACTIONS',
       cell: ({ row }) => (
         <ActionsCell
           request={row.original}

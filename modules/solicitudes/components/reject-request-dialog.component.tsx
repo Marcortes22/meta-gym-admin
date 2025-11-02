@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GymRequest } from '@/shared/types';
@@ -20,6 +19,7 @@ import {
   type RejectRequestFormData,
 } from '@/modules/solicitudes/models/schemas';
 import { XCircleIcon, Loader2Icon, AlertTriangleIcon } from 'lucide-react';
+import { useToast } from '@/shared/hooks/use-toast';
 
 interface RejectRequestDialogProps {
   request: GymRequest | null;
@@ -32,8 +32,8 @@ export function RejectRequestDialog({
   open,
   onOpenChange,
 }: RejectRequestDialogProps) {
-  const [showSuccess, setShowSuccess] = useState(false);
   const rejectRequest = useRejectRequest();
+  const { toast } = useToast();
 
   const {
     register,
@@ -49,7 +49,6 @@ export function RejectRequestDialog({
 
   const handleClose = () => {
     reset();
-    setShowSuccess(false);
     onOpenChange(false);
   };
 
@@ -63,37 +62,24 @@ export function RejectRequestDialog({
         rejectionReason: data.rejectionReason,
       });
 
-      setShowSuccess(true);
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
+      toast({
+        variant: 'error',
+        title: 'Request Rejected',
+        description: `Request from ${request.gym_name} has been rejected and the applicant has been notified`,
+      });
+      
+      handleClose();
     } catch (error) {
-      console.error('Error al rechazar solicitud:', error);
+      console.error('Error rejecting request:', error);
+      toast({
+        variant: 'error',
+        title: 'Rejection Failed',
+        description: 'Could not reject the request',
+      });
     }
   };
 
   if (!request) return null;
-
-  // Success state
-  if (showSuccess) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-md bg-[#0f0f10] border-gray-800 text-white">
-          <div className="flex flex-col items-center justify-center py-8 space-y-4">
-            <div className="p-4 bg-red-500/20 rounded-full">
-              <XCircleIcon className="h-16 w-16 text-red-400" />
-            </div>
-            <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-white">Solicitud Rechazada</h3>
-              <p className="text-gray-400">
-                Se ha notificado al solicitante
-              </p>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -17,3 +17,4 @@ export * from './gym-request.types';
 export * from './tenant.types';
 export * from './subscription.types';
 export * from './user.types';
+export * from './saas-plan.types';

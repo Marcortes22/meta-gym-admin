@@ -5,6 +5,7 @@ import {
   CalendarPlus,
   Settings,
   Landmark,
+  Building2,
   User2,
   ChevronUp,
   LogOut,
@@ -42,6 +43,11 @@ const items = [
     title: 'Solicitudes',
     url: '/dashboard/solicitudes',
     icon: CalendarPlus,
+  },
+  {
+    title: 'Tenants',
+    url: '/tenants',
+    icon: Building2,
   },
   {
     title: 'Tokens',

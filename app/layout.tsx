@@ -1,5 +1,6 @@
 import './globals.css';
 import QueryProvider from '@/shared/providers/query-provider';
+import { Toaster } from '@/shared/components/ui/toaster';
 
 export default function RootLayout({
   children,
@@ -9,7 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

@@ -43,6 +43,22 @@ function calculateSubscriptionEndDate(): Date {
 }
 
 /**
+ * Mapear el plan de la solicitud al plan del tenant
+ * GymRequest usa: basic_plan, professional_plan, enterprise_plan
+ * Tenant usa: basic_plan, standard_plan, premium_plan, enterprise_plan
+ */
+function mapRequestPlanToTenantPlan(
+  requestPlan: 'basic_plan' | 'professional_plan' | 'enterprise_plan'
+): 'basic_plan' | 'standard_plan' | 'premium_plan' | 'enterprise_plan' {
+  const planMap: Record<string, 'basic_plan' | 'standard_plan' | 'premium_plan' | 'enterprise_plan'> = {
+    basic_plan: 'basic_plan',
+    professional_plan: 'premium_plan', // Mapear professional a premium
+    enterprise_plan: 'enterprise_plan',
+  };
+  return planMap[requestPlan] || 'basic_plan';
+}
+
+/**
  * Obtener el precio del plan
  */
 function getPlanPrice(planId: string): number {
@@ -92,7 +108,7 @@ export async function approveGymRequestService(
       companyEmail: request.email,
       companyPhone: request.admin_phone,
       ownerId: userId,
-      currentPlanId: request.requested_plan,
+      currentPlanId: mapRequestPlanToTenantPlan(request.requested_plan),
       subscriptionEndDate,
       is_active: true,
     });
@@ -133,9 +149,7 @@ export async function approveGymRequestService(
     // PASO 5: Crear usuario en colección users con rol admin
     console.log('👤 Creando usuario admin...');
     const adminRoles: UserRole[] = [
-      { id: 'own', name: 'Administrador' },
-      { id: 'sec', name: 'Secretaria' },
-      { id: 'coa', name: 'Entrenador' },
+      { id: 'own', name: 'Administrador' }
     ];
 
     await createAdminUser({
