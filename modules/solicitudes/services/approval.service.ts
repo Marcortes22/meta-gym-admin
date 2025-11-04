@@ -10,6 +10,7 @@ import {
   generateGymCode,
 } from '@/modules/solicitudes/queries/approval.queries';
 import { GymRequest, UserRole } from '@/shared/types';
+import { sendCredentialsEmail } from './email.service';
 
 /**
  * Input para aprobar una solicitud de gimnasio
@@ -176,6 +177,18 @@ export async function approveGymRequestService(
       generatedToken: tenantId, // Usar tenantId como token
     });
     console.log('✅ Solicitud actualizada a approved');
+
+    // PASO 7: Enviar correo con credenciales
+    console.log('📧 Enviando correo con credenciales...');
+    await sendCredentialsEmail({
+      toEmail: request.email,
+      toName: `${request.admin_name} ${request.admin_surname1}`,
+      gymName: request.gym_name,
+      email: adminEmail,
+      password: adminPassword,
+      tenantId,
+    });
+    console.log('✅ Correo enviado');
 
     return {
       success: true,
