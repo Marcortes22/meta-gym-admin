@@ -292,7 +292,7 @@ export function TenantEditModal({
                 variant="outline"
                 onClick={handleClose}
                 disabled={updateTenant.isPending}
-                className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+                className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
               >
                 Cancelar
               </Button>
