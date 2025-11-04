@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/shared/lib/firebase/client";
 import type { Tenant, UpdateTenantInput } from "@/shared/types/tenant.types";
+import { createPaymentRecord } from "./payments.queries";
 
 /**
  * Fetch all tenants from Firestore
@@ -148,11 +149,14 @@ export async function updateTenant(
 }
 
 /**
- * Extend tenant subscription by 30 days
+ * Extend tenant subscription by 30 days and create payment record
  */
-export async function extendTenantSubscription(
-  tenantId: string
-): Promise<Date> {
+export async function extendTenantSubscription(params: {
+  tenantId: string;
+  amount: number;
+  notes?: string;
+}): Promise<Date> {
+  const { tenantId, amount, notes } = params;
   try {
     const tenantRef = doc(db, "tenants", tenantId);
     const tenantDoc = await getDoc(tenantRef);
@@ -161,7 +165,8 @@ export async function extendTenantSubscription(
       throw new Error(`Tenant with ID ${tenantId} not found`);
     }
 
-    const currentEndDate = tenantDoc.data().subscriptionEndDate;
+    const tenantData = tenantDoc.data();
+    const currentEndDate = tenantData.subscriptionEndDate;
     const currentDate =
       currentEndDate instanceof Timestamp
         ? currentEndDate.toDate()
@@ -171,6 +176,21 @@ export async function extendTenantSubscription(
     const newEndDate = new Date(currentDate);
     newEndDate.setDate(newEndDate.getDate() + 30);
 
+    // The subscriptionId doesn't exist - we use tenantId directly
+    // as the collection we need to update is tenant_subscriptions which uses tenantId
+    
+    // Create payment record with provided amount
+    await createPaymentRecord({
+      tenantId,
+      subscriptionId: tenantId, // Use tenantId as subscription identifier
+      amount,
+      periodStart: currentDate,
+      periodEnd: newEndDate,
+      notes: notes || "Payment received - subscription extended for 30 days",
+    });
+
+    // Update tenant subscription date (this is done in createPaymentRecord)
+    // but we'll update tenant directly as well for consistency
     await updateDoc(tenantRef, {
       subscriptionEndDate: Timestamp.fromDate(newEndDate),
     });
@@ -178,7 +198,9 @@ export async function extendTenantSubscription(
     return newEndDate;
   } catch (error) {
     console.error("Error extending subscription:", error);
-    throw new Error("Failed to extend subscription");
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to extend subscription"
+    );
   }
 }
 

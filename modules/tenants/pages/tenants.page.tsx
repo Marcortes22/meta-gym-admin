@@ -5,6 +5,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Building2Icon } from "lucide-react";
 import type { Tenant } from "@/shared/types/tenant.types";
 import { DataTable } from "@/shared/components/data-table/data-table";
@@ -18,6 +19,7 @@ import { ConfirmationModal } from "@/shared/components/ui/confirmation-modal";
 import { useToast } from "@/shared/hooks/use-toast";
 
 export function TenantsPage() {
+  const router = useRouter();
   const { data: tenants = [], isLoading, error } = useTenants();
   const { data: saasPlans = [], isLoading: isLoadingPlans } = useActiveSaasPlans();
   const toggleStatus = useToggleTenantStatus();
@@ -38,8 +40,7 @@ export function TenantsPage() {
 
   // Handlers
   function handleView(tenant: Tenant) {
-    setSelectedTenant(tenant);
-    setIsViewOpen(true);
+    router.push(`/tenants/${tenant.id}`);
   }
 
   function handleEdit(tenant: Tenant) {

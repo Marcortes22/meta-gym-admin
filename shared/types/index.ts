@@ -18,3 +18,4 @@ export * from './tenant.types';
 export * from './subscription.types';
 export * from './user.types';
 export * from './saas-plan.types';
+export * from './payment.types';

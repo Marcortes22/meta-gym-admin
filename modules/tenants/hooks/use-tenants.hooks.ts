@@ -90,7 +90,8 @@ export function useExtendSubscription() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (tenantId: string) => extendTenantSubscription(tenantId),
+    mutationFn: (params: { tenantId: string; amount: number; notes?: string }) =>
+      extendTenantSubscription(params),
     onSuccess: () => {
       // Invalidate tenant queries to refetch updated data
       queryClient.invalidateQueries({ queryKey: tenantKeys.all });
