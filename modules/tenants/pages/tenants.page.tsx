@@ -108,14 +108,6 @@ export function TenantsPage() {
             Manage companies and subscriptions
           </p>
         </div>
-        
-        {/* Status indicator */}
-        {!isLoading && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-500/10 border border-green-500/20">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-green-400 font-medium">Live</span>
-          </div>
-        )}
       </div>
 
       {/* Stats bar */}
