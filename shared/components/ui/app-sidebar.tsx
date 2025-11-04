@@ -1,10 +1,7 @@
 'use client';
 import {
-  KeyRound,
   Home,
   CalendarPlus,
-  Settings,
-  Landmark,
   Building2,
   User2,
   ChevronUp,
@@ -40,29 +37,14 @@ const items = [
     icon: Home,
   },
   {
-    title: 'Solicitudes',
-    url: '/dashboard/solicitudes',
-    icon: CalendarPlus,
-  },
-  {
     title: 'Tenants',
     url: '/tenants',
     icon: Building2,
   },
   {
-    title: 'Tokens',
-    url: '/dashboard/tokens',
-    icon: KeyRound,
-  },
-  {
-    title: 'Gimnasios',
-    url: '/dashboard/gimnasios',
-    icon: Landmark,
-  },
-  {
-    title: 'Administración',
-    url: '/dashboard/administracion',
-    icon: Settings,
+    title: 'Solicitudes',
+    url: '/dashboard/solicitudes',
+    icon: CalendarPlus,
   },
 ];
 

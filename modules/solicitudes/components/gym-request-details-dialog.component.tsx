@@ -21,6 +21,8 @@ import {
   XCircleIcon,
   KeyIcon,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getUserNameByUid } from '../queries/users.queries';
 
 interface GymRequestDetailsDialogProps {
   request: GymRequest | null;
@@ -33,6 +35,22 @@ export function GymRequestDetailsDialog({
   open,
   onOpenChange,
 }: GymRequestDetailsDialogProps) {
+  const [reviewerName, setReviewerName] = useState<string | null>(null);
+
+  // Fetch reviewer name when request changes
+  useEffect(() => {
+    async function fetchReviewerName() {
+      if (request?.reviewedBy) {
+        const name = await getUserNameByUid(request.reviewedBy);
+        setReviewerName(name);
+      } else {
+        setReviewerName(null);
+      }
+    }
+
+    fetchReviewerName();
+  }, [request?.reviewedBy]);
+
   if (!request) return null;
 
   const stateVariants = {
@@ -176,7 +194,9 @@ export function GymRequestDetailsDialog({
                   {request.reviewedBy && (
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-300">Reviewed By</label>
-                      <p className="text-gray-200">{request.reviewedBy}</p>
+                      <p className="text-gray-200">
+                        {reviewerName || request.reviewedBy}
+                      </p>
                     </div>
                   )}
                 </>
@@ -194,19 +214,6 @@ export function GymRequestDetailsDialog({
                 <label className="text-sm font-semibold text-red-400">Rejection Reason</label>
               </div>
               <p className="text-red-300 pl-11">{request.rejectionReason}</p>
-            </div>
-          )}
-
-          {/* Token (if approved) */}
-          {request.state === 'approved' && request.generatedToken && (
-            <div className="space-y-3 p-5 bg-green-500/10 rounded-lg border border-green-500/30 shadow-sm">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <KeyIcon className="h-5 w-5 text-green-400" />
-                </div>
-                <label className="text-sm font-semibold text-green-400">Generated Token</label>
-              </div>
-              <p className="text-green-300 font-mono text-sm break-all pl-11">{request.generatedToken}</p>
             </div>
           )}
         </div>

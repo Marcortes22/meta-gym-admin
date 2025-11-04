@@ -96,11 +96,14 @@ export async function createAdminUser(input: CreateAdminUserInput): Promise<void
     phone: input.phone,
     dateOfBirth: input.dateOfBirth || '',
     roles: input.roles,
+    gymId: input.gymId,
+    tenantId: input.tenantId,
     height: 0,
     weight: 0,
     membershipId: null,
     profilePictureUrl: null,
     pin: null,
+    createdAt: serverTimestamp(),
   });
 }
 

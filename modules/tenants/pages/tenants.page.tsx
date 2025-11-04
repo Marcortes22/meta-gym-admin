@@ -5,6 +5,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Building2Icon } from "lucide-react";
 import type { Tenant } from "@/shared/types/tenant.types";
 import { DataTable } from "@/shared/components/data-table/data-table";
@@ -18,6 +19,7 @@ import { ConfirmationModal } from "@/shared/components/ui/confirmation-modal";
 import { useToast } from "@/shared/hooks/use-toast";
 
 export function TenantsPage() {
+  const router = useRouter();
   const { data: tenants = [], isLoading, error } = useTenants();
   const { data: saasPlans = [], isLoading: isLoadingPlans } = useActiveSaasPlans();
   const toggleStatus = useToggleTenantStatus();
@@ -38,8 +40,7 @@ export function TenantsPage() {
 
   // Handlers
   function handleView(tenant: Tenant) {
-    setSelectedTenant(tenant);
-    setIsViewOpen(true);
+    router.push(`/tenants/${tenant.id}`);
   }
 
   function handleEdit(tenant: Tenant) {
@@ -107,14 +108,6 @@ export function TenantsPage() {
             Manage companies and subscriptions
           </p>
         </div>
-        
-        {/* Status indicator */}
-        {!isLoading && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-green-500/10 border border-green-500/20">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-green-400 font-medium">Live</span>
-          </div>
-        )}
       </div>
 
       {/* Stats bar */}
