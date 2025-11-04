@@ -80,14 +80,14 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
   }
 
   return (
-    <div className="space-y-6 pb-8">
+    <div className="space-y-6 pb-8 px-6 max-w-[1600px] mx-auto">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Button
           onClick={handleBack}
           variant="outline"
           size="sm"
-          className="border-gray-700 text-gray-300 hover:bg-gray-800"
+          className="border-gray-500 bg-gray-800/50 text-white hover:bg-gray-700 hover:text-white hover:border-gray-400"
         >
           <ArrowLeftIcon className="h-4 w-4 mr-2" />
           Back
@@ -101,41 +101,41 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column - Tenant Information */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-7 space-y-6">
           {/* Tenant Information Card */}
           <Card className="bg-gray-900/50 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-white">Tenant Information</CardTitle>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-white">Tenant Information</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-400">Tenant Code</p>
-                  <p className="font-semibold text-white">
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Tenant Code</p>
+                  <p className="font-semibold text-white text-base">
                     {formatTenantCode(tenant.id)}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-400">Gym Name</p>
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Gym Name</p>
                   <div className="flex items-center gap-2">
-                    <BuildingIcon className="h-4 w-4 text-gray-500" />
-                    <p className="font-semibold text-white">{tenant.companyName}</p>
+                    <BuildingIcon className="h-4 w-4 text-gray-500 shrink-0" />
+                    <p className="font-semibold text-white text-base">{tenant.companyName}</p>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-400">Contact Email</p>
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Contact Email</p>
                   <div className="flex items-center gap-2">
-                    <MailIcon className="h-4 w-4 text-gray-500" />
-                    <p className="text-white">{tenant.companyEmail}</p>
+                    <MailIcon className="h-4 w-4 text-gray-500 shrink-0" />
+                    <p className="text-white text-sm">{tenant.companyEmail}</p>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-400">Contact Phone</p>
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Contact Phone</p>
                   <div className="flex items-center gap-2">
-                    <PhoneIcon className="h-4 w-4 text-gray-500" />
-                    <p className="text-white">{tenant.companyPhone}</p>
+                    <PhoneIcon className="h-4 w-4 text-gray-500 shrink-0" />
+                    <p className="text-white text-sm">{tenant.companyPhone}</p>
                   </div>
                 </div>
               </div>
@@ -144,10 +144,10 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
 
           {/* Payment History */}
           <Card className="bg-gray-900/50 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-white">Payment History</CardTitle>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-white">Payment History</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               {loadingPayments ? (
                 <div className="space-y-3">
                   <Skeleton className="h-12 w-full bg-gray-800" />
@@ -167,28 +167,28 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
         </div>
 
         {/* Right Column - Subscription Details */}
-        <div className="lg:col-span-2">
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-white">Subscription Details</CardTitle>
+        <div className="lg:col-span-5">
+          <Card className="bg-gray-900/50 border-gray-800 h-fit">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-white">Subscription Details</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 pt-0">
               {/* Current Plan */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-400">Current Plan</p>
-                <p className="text-xl font-bold text-white">
+              <div className="space-y-1.5">
+                <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Current Plan</p>
+                <p className="text-lg font-bold text-white">
                   {currentPlan ? currentPlan.name : getPlanName(tenant.currentPlanId, saasPlans)}
                 </p>
                 {currentPlan && (
-                  <p className="text-2xl font-bold text-green-400">
+                  <p className="text-xl font-bold text-green-400">
                     ${currentPlan.price.toFixed(2)}/month
                   </p>
                 )}
               </div>
 
               {/* Status */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-400">Status</p>
+              <div className="space-y-1.5">
+                <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Status</p>
                 <Badge
                   variant="outline"
                   className={getSubscriptionStatusVariant(tenant).className}
@@ -198,22 +198,22 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
               </div>
 
               {/* Start Date */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-400">Start Date</p>
+              <div className="space-y-1.5">
+                <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Start Date</p>
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-gray-500" />
-                  <p className="text-white">
+                  <p className="text-white text-sm">
                     {format(tenant.createdAt, "MMMM dd, yyyy")}
                   </p>
                 </div>
               </div>
 
               {/* End Date */}
-              <div className="space-y-2">
-                <p className="text-sm text-gray-400">End Date</p>
+              <div className="space-y-1.5">
+                <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">End Date</p>
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-gray-500" />
-                  <p className="text-white font-semibold">
+                  <p className="text-white font-semibold text-sm">
                     {format(tenant.subscriptionEndDate, "MMMM dd, yyyy")}
                   </p>
                 </div>

@@ -15,7 +15,6 @@ interface PaymentHistoryTableProps {
 }
 
 export function PaymentHistoryTable({ payments }: PaymentHistoryTableProps) {
-  // Sort payments by date (most recent first)
   const sortedPayments = [...payments].sort((a, b) => {
     const dateA = a.paidAt || a.createdAt || new Date(0);
     const dateB = b.paidAt || b.createdAt || new Date(0);
@@ -35,9 +34,6 @@ export function PaymentHistoryTable({ payments }: PaymentHistoryTableProps) {
             </th>
             <th className="text-left py-3 px-4 text-sm font-medium text-gray-400 uppercase tracking-wide">
               Status
-            </th>
-            <th className="text-left py-3 px-4 text-sm font-medium text-gray-400 uppercase tracking-wide">
-              Invoice
             </th>
           </tr>
         </thead>
@@ -76,17 +72,6 @@ export function PaymentHistoryTable({ payments }: PaymentHistoryTableProps) {
                     Unpaid
                   </Badge>
                 )}
-              </td>
-
-              {/* Invoice */}
-              <td className="py-4 px-4">
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="text-blue-400 hover:text-blue-300 p-0 h-auto"
-                >
-                  View
-                </Button>
               </td>
             </tr>
           ))}
