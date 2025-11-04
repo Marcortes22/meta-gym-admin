@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { toEmail, toName, gymName, email, password, tenantId } = body;
 
-    // Validar datos requeridos
     if (!toEmail || !toName || !gymName || !email || !password || !tenantId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
