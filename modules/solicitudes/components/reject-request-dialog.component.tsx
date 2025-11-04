@@ -140,7 +140,7 @@ export function RejectRequestDialog({
               variant="outline"
               onClick={handleClose}
               disabled={rejectRequest.isPending}
-              className="border-gray-500 bg-gray-800/50 text-white hover:bg-gray-800 hover:border-gray-400"
+              className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
             >
               Cancelar
             </Button>
