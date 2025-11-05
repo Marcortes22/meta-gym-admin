@@ -20,26 +20,18 @@ export function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-[#0f0f10] px-4">
       <Card className="w-full max-w-md border-zinc-800 bg-zinc-900/50 backdrop-blur">
         <CardHeader className="space-y-3 text-center">
-          <div className="mx-auto w-16 h-16 bg-linear-to-br from-[#fe6b24] to-orange-600 rounded-2xl flex items-center justify-center">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+          <div className="mx-auto flex items-center justify-center">
+            <img 
+              src="/MetaGym.png" 
+              alt="MetaGym Logo" 
+              className="h-20 w-auto"
+            />
           </div>
-          <CardTitle className="text-3xl font-bold text-white">
-            MetaGym Admin
+          <CardTitle className="text-2xl font-bold text-white">
+            Panel de Administración
           </CardTitle>
           <CardDescription className="text-zinc-400">
-            Panel de Administración
+            Sistema de Gestión de Gimnasios
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

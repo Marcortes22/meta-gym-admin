@@ -168,7 +168,6 @@ function DataTablePagination<TData>({
 
   return (
     <div className="flex items-center justify-between px-2 py-2">
-      {/* Left: Row count info */}
       <div className="flex items-center gap-6">
         <p className="text-sm text-gray-300">
           Showing{' '}
@@ -185,8 +184,6 @@ function DataTablePagination<TData>({
           </span>{' '}
           results
         </p>
-
-        {/* Page size selector */}
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-gray-100">Rows:</span>
           <Select
@@ -210,8 +207,6 @@ function DataTablePagination<TData>({
           </Select>
         </div>
       </div>
-
-      {/* Right: Navigation controls */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1">
           <Button
@@ -271,7 +266,6 @@ function DataTablePagination<TData>({
   );
 }
 
-// Skeleton Component
 function DataTableSkeleton<TData, TValue>({
   columns,
   pageSize = 10,
