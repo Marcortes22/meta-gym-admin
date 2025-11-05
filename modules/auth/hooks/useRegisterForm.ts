@@ -38,7 +38,6 @@ export function useRegisterForm() {
         return;
       }
 
-      // Update user profile with name
       if (authData?.user) {
         await updateProfile(authData.user, {
           displayName: data.name,
@@ -47,7 +46,7 @@ export function useRegisterForm() {
         await checkAuth();
         setSuccess(true);
         
-        // Redirect to dashboard
+
         router.push('/dashboard');
         router.refresh();
       }

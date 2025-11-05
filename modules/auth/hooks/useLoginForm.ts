@@ -6,10 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../services/auth.service';
 import { useMutation } from '@tanstack/react-query';
 
-/**
- * Custom hook para manejar el formulario de login
- * Utiliza React Hook Form para validación y TanStack Query para mutations
- */
+
 export function useLoginForm() {
   const router = useRouter();
   const { signIn, checkAuth } = useAuth();
@@ -21,18 +18,13 @@ export function useLoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
-  // TanStack Query mutation para el login
   const loginMutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
       return await loginUser(data.email, data.password, signIn);
     },
     onSuccess: async (result) => {
       if (result.success) {
-        // Revalidar el estado de autenticación
         await checkAuth();
-
-        // Redirigir al dashboard
         router.push('/dashboard');
         router.refresh();
       }
