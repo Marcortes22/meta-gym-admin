@@ -22,12 +22,12 @@ export default function LogOutButton() {
       className="w-full justify-start px-0"
     >
       {isLoading ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Cerrando sesión...
-        </>
+      <>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Logging out...
+      </>
       ) : (
-        'Cerrar Sesión'
+      'Log Out'
       )}
     </Button>
   );
