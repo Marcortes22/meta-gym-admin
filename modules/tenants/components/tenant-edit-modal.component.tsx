@@ -101,7 +101,6 @@ export function TenantEditModal({
       onClose();
       form.reset();
     } catch (error) {
-      console.error("Error updating tenant:", error);
       toast({
         variant: "error",
         title: "Update Failed",
@@ -214,7 +213,6 @@ export function TenantEditModal({
                     </FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        console.log('Selected plan (ID):', value);
                         field.onChange(value);
                       }}
                       value={field.value}

@@ -22,7 +22,6 @@ export async function middleware(request: NextRequest) {
 
   // If user is not authenticated and trying to access protected route
   if (!sessionCookie && !isPublicRoute) {
-    console.log('🔒 Redirigiendo a login:', request.nextUrl.pathname);
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
@@ -30,7 +29,6 @@ export async function middleware(request: NextRequest) {
 
   // If user is authenticated and accessing home, redirect to dashboard
   if (sessionCookie && isHomeRoute) {
-    console.log('✅ Usuario autenticado redirigiendo a dashboard');
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
@@ -38,7 +36,6 @@ export async function middleware(request: NextRequest) {
 
   // If user is authenticated and trying to access login/register, redirect to dashboard
   if (sessionCookie && isPublicRoute) {
-    console.log('✅ Usuario autenticado redirigiendo a dashboard');
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);

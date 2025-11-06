@@ -46,10 +46,6 @@ export function initializeFirebaseAdmin(): admin.app.App {
       });
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`🔥 Firebase Admin initialized for project: ${config.projectId}`);
-    }
-
     return adminApp;
   } catch (error) {
     if (error instanceof Error && error.message.includes('already exists')) {

@@ -87,17 +87,14 @@ export async function approveGymRequestService(
 
   try {
     // STEP 1: Create user in Firebase Auth
-    console.log('🔐 Creating user in Firebase Auth...');
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       adminEmail,
       adminPassword
     );
     const userId = userCredential.user.uid;
-    console.log('✅ Auth user created:', userId);
 
     // STEP 2: Create tenant
-    console.log('🏢 Creating tenant...');
     const tenantId = generateTenantId();
     const subscriptionEndDate = calculateSubscriptionEndDate();
     
@@ -111,10 +108,8 @@ export async function approveGymRequestService(
       subscriptionEndDate,
       is_active: true,
     });
-    console.log('✅ Tenant created:', tenantId);
 
     // STEP 3: Create subscription
-    console.log('💳 Creating subscription...');
     const now = new Date();
     const subscriptionId = await createSubscription({
       tenantId,
@@ -126,10 +121,8 @@ export async function approveGymRequestService(
       paymentAmount: getPlanPrice(request.requested_plan),
       autoRenew: true,
     });
-    console.log('✅ Subscription created:', subscriptionId);
 
     // STEP 4: Create gym
-    console.log('🏋️ Creating gym...');
     const gymCode = generateGymCode();
     const gymId = await createGym({
       tenantId,
@@ -143,10 +136,8 @@ export async function approveGymRequestService(
       country: 'N/A', 
       is_active: true,
     });
-    console.log('✅ Gym created:', gymId);
 
     // STEP 5: Create user in users collection with admin role
-    console.log('👤 Creating admin user...');
     const adminRoles: UserRole[] = [
       { id: 'own', name: 'Administrator' }
     ];
@@ -163,10 +154,8 @@ export async function approveGymRequestService(
       gymId: gymId,
       tenantId: tenantId,
     });
-    console.log('✅ Admin user created in users collection');
 
     // STEP 6: Update request to "approved"
-    console.log('📝 Updating request...');
     const requestRef = doc(db, 'register_requests', requestId);
     await updateDoc(requestRef, {
       state: 'approved',
@@ -174,10 +163,8 @@ export async function approveGymRequestService(
       reviewedAt: serverTimestamp(),
       generatedToken: tenantId, 
     });
-    console.log('✅ Request updated to approved');
 
     // STEP 7: Send email with credentials
-    console.log('📧 Sending email with credentials...');
     await sendCredentialsEmail({
       toEmail: request.email,
       toName: `${request.admin_name} ${request.admin_surname1}`,
@@ -185,8 +172,8 @@ export async function approveGymRequestService(
       email: adminEmail,
       password: adminPassword,
       tenantId,
+      gymCode,
     });
-    console.log('✅ Email sent');
 
     return {
       success: true,
@@ -196,7 +183,6 @@ export async function approveGymRequestService(
       message: `Request approved successfully. Tenant: ${tenantId}, Gym: ${gymCode}`,
     };
   } catch (error) {
-    console.error('❌ Error approving request:', error);
     throw new Error(
       error instanceof Error
         ? `Error approving request: ${error.message}`

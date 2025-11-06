@@ -12,13 +12,9 @@ export const paymentKeys = {
 
 
 export function usePaymentsByTenant(tenantId: string) {
-  console.log('🎣 [usePaymentsByTenant] Hook called with tenantId:', tenantId);
-  console.log('🎣 [usePaymentsByTenant] Query enabled:', !!tenantId);
-  
   return useQuery({
     queryKey: paymentKeys.byTenant(tenantId),
     queryFn: () => {
-      console.log('🚀 [usePaymentsByTenant] QueryFn executing for tenantId:', tenantId);
       return getPaymentsByTenant(tenantId);
     },
     enabled: !!tenantId,

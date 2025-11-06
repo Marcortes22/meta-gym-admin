@@ -81,7 +81,6 @@ export function MarkPaymentModal({
       setNotes("");
       onClose();
     } catch (error) {
-      console.error("Error extending subscription:", error);
       toast({
         variant: "error",
         title: "Payment Failed",

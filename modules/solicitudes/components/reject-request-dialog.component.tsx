@@ -70,7 +70,6 @@ export function RejectRequestDialog({
       
       handleClose();
     } catch (error) {
-      console.error('Error rejecting request:', error);
       toast({
         variant: 'error',
         title: 'Rejection Failed',

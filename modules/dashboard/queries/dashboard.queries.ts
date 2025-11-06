@@ -36,7 +36,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       rejectedRequests,
     };
   } catch (error) {
-    console.error('Error fetching dashboard stats:', error);
     throw error;
   }
 }
@@ -95,7 +94,6 @@ export async function getMonthlyGrowthData(): Promise<MonthlyGrowthData[]> {
 
     return result;
   } catch (error) {
-    console.error('Error fetching monthly growth data:', error);
     throw error;
   }
 }

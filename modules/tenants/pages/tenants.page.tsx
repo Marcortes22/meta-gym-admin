@@ -65,7 +65,6 @@ export function TenantsPage() {
         description: `Tenant "${tenant.companyName}" has been ${actionText} successfully.`,
       });
     } catch (error) {
-      console.error('Error toggling tenant status:', error);
       toast({
         variant: "error",
         title: "Update Failed",
