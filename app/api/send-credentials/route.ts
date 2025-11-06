@@ -53,16 +53,7 @@ export async function POST(request: NextRequest) {
                 <div style="color: #fe6b24; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold;">${gymCode}</div>
               </div>
             </div>
-
-            <div style="background: linear-gradient(135deg, #1a1a1d 0%, #141414 100%); border: 2px solid #fe6b24; border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 25px;">
-              <h4 style="color: #fefefe; margin: 0 0 15px 0; font-size: 18px; font-weight: bold;">
-                Access the administration panel
-              </h4>
-              <a href="https://admin.metagym.com" style="display: inline-block; background: linear-gradient(135deg, #e04a36, #fe6b24); color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-                Sign In
-              </a>
-            </div>
-
+            
             <div style="background: #141414; border: 1px solid rgba(254, 107, 36, 0.3); border-radius: 8px; padding: 20px; margin-bottom: 25px;">
               <p style="color: #fe6b24; margin: 0 0 10px 0; font-size: 14px; font-weight: bold;">
                 Important - Security
