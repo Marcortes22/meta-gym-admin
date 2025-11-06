@@ -77,7 +77,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      {/* Table */}
       <div className="rounded-lg border border-gray-800 bg-[#0f0f10] overflow-hidden shadow-lg">
         <Table>
           <TableHeader>
@@ -119,7 +118,6 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Pagination */}
       {showPagination && data.length > 0 && (
         <DataTablePagination table={table} pageSizeOptions={pageSizeOptions} />
       )}
@@ -127,7 +125,7 @@ export function DataTable<TData, TValue>({
   );
 }
 
-// Empty State Component
+
 function EmptyState({ message, description }: { message: string; description: string }) {
   return (
     <div className="flex flex-col items-center gap-3 py-12">
@@ -154,7 +152,7 @@ function EmptyState({ message, description }: { message: string; description: st
   );
 }
 
-// Pagination Component siguiendo guías de TanStack Table
+
 function DataTablePagination<TData>({
   table,
   pageSizeOptions,
