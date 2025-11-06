@@ -30,7 +30,6 @@ export function SolicitudesPage() {
 
   const { data: requests = [], isLoading, error } = useGymRequestsByState(activeFilter);
 
-  // Debug
   console.log('Filter:', activeFilter);
   console.log('Loading:', isLoading);
   console.log('Requests:', requests);
@@ -65,7 +64,6 @@ export function SolicitudesPage() {
         </div>
       </div>
 
-      {/* Filter tabs with active indicator */}
       <div className="flex items-center justify-between border-b border-border/40 pb-4">
         <div className="flex gap-1" role="group" aria-label="Filter requests by status">
           {filters.map((filter) => {
@@ -94,7 +92,7 @@ export function SolicitudesPage() {
           })}
         </div>
         
-        {/* Result counter with icon */}
+
         <div className="flex items-center gap-2 text-sm text-gray-400">
           {isLoading ? (
             <Skeleton className="h-5 w-28 bg-gray-700/50" />
@@ -122,7 +120,7 @@ export function SolicitudesPage() {
         </div>
       </div>
 
-      {/* Table */}
+
       <DataTable
         columns={createColumns(handleViewDetails, handleApprove, handleReject)}
         data={requests}

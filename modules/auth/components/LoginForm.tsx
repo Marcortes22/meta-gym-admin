@@ -28,10 +28,10 @@ export function LoginForm() {
             />
           </div>
           <CardTitle className="text-2xl font-bold text-white">
-            Panel de Administración
+            Administration Panel
           </CardTitle>
           <CardDescription className="text-zinc-400">
-            Sistema de Gestión de Gimnasios
+            Gym Management System
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -44,7 +44,7 @@ export function LoginForm() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-zinc-300">
-                Correo Electrónico
+                Email
               </Label>
               <Input
                 id="email"
@@ -61,7 +61,7 @@ export function LoginForm() {
 
             <div className="space-y-2">
               <Label htmlFor="password" className="text-zinc-300">
-                Contraseña
+                Password
               </Label>
               <Input
                 id="password"
@@ -99,16 +99,16 @@ export function LoginForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  Iniciando sesión...
+                  Signing in...
                 </span>
               ) : (
-                'Iniciar Sesión'
+                'Sign In'
               )}
             </Button>
           </form>
 
           <div className="text-center text-sm text-zinc-500">
-            Solo administradores autorizados
+            Authorized administrators only
           </div>
         </CardContent>
       </Card>

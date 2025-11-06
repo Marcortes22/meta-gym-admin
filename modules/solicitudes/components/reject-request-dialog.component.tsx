@@ -87,23 +87,22 @@ export function RejectRequestDialog({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
             <AlertTriangleIcon className="h-6 w-6 text-red-400" />
-            Rechazar Solicitud
+            Reject Request
           </DialogTitle>
           <DialogDescription className="text-gray-400 mt-1">
-            Proporciona una razón clara para el rechazo de{' '}
+            Provide a clear reason for rejecting{' '}
             <span className="font-semibold text-red-400">{request.gym_name}</span>
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-4">
-          {/* Información del gym */}
           <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/30 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-red-300">Gimnasio:</span>
+              <span className="text-sm text-red-300">Gym:</span>
               <span className="text-white font-semibold">{request.gym_name}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-red-300">Administrador:</span>
+              <span className="text-sm text-red-300">Administrator:</span>
               <span className="text-white">
                 {request.admin_name} {request.admin_surname1}
               </span>
@@ -114,15 +113,14 @@ export function RejectRequestDialog({
             </div>
           </div>
 
-          {/* Rejection Reason */}
           <div className="space-y-2">
             <Label htmlFor="rejectionReason" className="text-gray-300 font-semibold">
-              Razón del Rechazo
+              Rejection Reason
             </Label>
             <textarea
               id="rejectionReason"
               rows={5}
-              placeholder="Explica por qué se rechaza esta solicitud..."
+              placeholder="Explain why this request is being rejected..."
               className="w-full px-3 py-2 bg-[#1a1a1b] border border-gray-700 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
               {...register('rejectionReason')}
             />
@@ -130,7 +128,7 @@ export function RejectRequestDialog({
               <p className="text-sm text-red-400">{errors.rejectionReason.message}</p>
             )}
             <p className="text-xs text-gray-500">
-              Mínimo 10 caracteres. Esta razón será visible para el solicitante.
+              Minimum 10 characters. This reason will be visible to the applicant.
             </p>
           </div>
 
@@ -142,7 +140,7 @@ export function RejectRequestDialog({
               disabled={rejectRequest.isPending}
               className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
             >
-              Cancelar
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -152,12 +150,12 @@ export function RejectRequestDialog({
               {rejectRequest.isPending ? (
                 <>
                   <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
-                  Rechazando...
+                  Rejecting...
                 </>
               ) : (
                 <>
                   <XCircleIcon className="h-4 w-4 mr-2" />
-                  Rechazar Solicitud
+                  Reject Request
                 </>
               )}
             </Button>
@@ -168,7 +166,7 @@ export function RejectRequestDialog({
               <p className="text-sm text-red-400">
                 {rejectRequest.error instanceof Error
                   ? rejectRequest.error.message
-                  : 'Error al rechazar la solicitud'}
+                  : 'Error rejecting request'}
               </p>
             </div>
           )}

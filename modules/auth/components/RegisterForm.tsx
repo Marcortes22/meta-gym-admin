@@ -30,17 +30,16 @@ export function RegisterForm() {
       <Card className="w-full max-w-md mx-auto">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center text-green-600">
-            ¡Registro Exitoso!
+            Registration Successful!
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
-            Te hemos enviado un email de confirmación. Por favor revisa tu
-            bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+            We have sent you a confirmation email. Please check your inbox and click the link to activate your account.
           </Alert>
           <div className="text-center">
             <Link href="/login" className="text-blue-600 hover:underline">
-              Volver al Login
+              Back to Login
             </Link>
           </div>
         </CardContent>
@@ -52,10 +51,10 @@ export function RegisterForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
-          Crear Cuenta
+          Create Account
         </CardTitle>
         <CardDescription className="text-center">
-          Regístrate para acceder a MetaGym
+          Sign up to access MetaGym
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -63,11 +62,11 @@ export function RegisterForm() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nombre</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               type="text"
-              placeholder="Tu nombre completo"
+              placeholder="Your full name"
               disabled={isFormLoading}
               {...register('name')}
             />
@@ -81,7 +80,7 @@ export function RegisterForm() {
             <Input
               id="email"
               type="email"
-              placeholder="tu@email.com"
+              placeholder="your@email.com"
               disabled={isFormLoading}
               {...register('email')}
             />
@@ -91,7 +90,7 @@ export function RegisterForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Contraseña</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -105,7 +104,7 @@ export function RegisterForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input
               id="confirmPassword"
               type="password"
@@ -121,14 +120,14 @@ export function RegisterForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isFormLoading}>
-            {isFormLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
+            {isFormLoading ? 'Creating account...' : 'Create Account'}
           </Button>
         </form>
 
         <div className="text-center text-sm">
-          <span className="text-gray-600">¿Ya tienes una cuenta? </span>
+          <span className="text-gray-600">Already have an account? </span>
           <Link href="/login" className="text-blue-600 hover:underline">
-            Inicia sesión aquí
+            Sign in here
           </Link>
         </div>
       </CardContent>

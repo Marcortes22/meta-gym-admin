@@ -16,7 +16,6 @@ interface ActionsCellProps {
 function ActionsCell({ request, onViewDetails, onApprove, onReject }: ActionsCellProps) {
   return (
     <div className="flex items-center gap-2">
-      {/* View Details Button - Always visible with high contrast */}
       <Button
         size="sm"
         variant="outline"
@@ -27,7 +26,7 @@ function ActionsCell({ request, onViewDetails, onApprove, onReject }: ActionsCel
         View
       </Button>
 
-      {/* Action Buttons - Only for pending */}
+
       {request.state === 'pending' && (
         <>
           <Button

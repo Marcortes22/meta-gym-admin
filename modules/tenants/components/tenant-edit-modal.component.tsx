@@ -1,6 +1,3 @@
-/**
- * Tenant edit modal component
- */
 
 "use client";
 
@@ -63,10 +60,6 @@ export function TenantEditModal({
   const { data: saasPlans = [], isLoading: isLoadingPlans } = useActiveSaasPlans();
   const { toast } = useToast();
 
-  // Debug
-  console.log('Edit Modal - SaaS Plans:', saasPlans);
-  console.log('Edit Modal - Loading Plans:', isLoadingPlans);
-  console.log('Edit Modal - Tenant:', tenant);
 
   const form = useForm<UpdateTenantFormData>({
     resolver: zodResolver(updateTenantSchema),
@@ -78,7 +71,7 @@ export function TenantEditModal({
     },
   });
 
-  // Reset form when tenant changes
+
   useEffect(() => {
     if (tenant) {
       form.reset({
@@ -132,16 +125,15 @@ export function TenantEditModal({
       <DialogContent className="max-w-2xl bg-[#0f0f10] border-gray-800">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-white">
-            Editar Tenant {formatTenantCode(tenant.id)}
+            Edit Tenant {formatTenantCode(tenant.id)}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Modifique la información del tenant
+            Modify tenant information
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Company Name */}
             <FormField
               control={form.control}
               name="companyName"
@@ -149,12 +141,12 @@ export function TenantEditModal({
                 <FormItem>
                   <FormLabel className="text-gray-300 flex items-center gap-2">
                     <BuildingIcon className="h-4 w-4" />
-                    Nombre de la Empresa
+                    Company Name
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Ingrese el nombre de la empresa"
+                      placeholder="Enter company name"
                       className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-[#fe6b24]"
                     />
                   </FormControl>
@@ -163,7 +155,6 @@ export function TenantEditModal({
               )}
             />
 
-            {/* Company Email */}
             <FormField
               control={form.control}
               name="companyEmail"
@@ -171,13 +162,13 @@ export function TenantEditModal({
                 <FormItem>
                   <FormLabel className="text-gray-300 flex items-center gap-2">
                     <MailIcon className="h-4 w-4" />
-                    Email de la Empresa
+                    Company Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
-                      placeholder="correo@empresa.com"
+                      placeholder="email@company.com"
                       className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-[#fe6b24]"
                     />
                   </FormControl>
@@ -186,7 +177,7 @@ export function TenantEditModal({
               )}
             />
 
-            {/* Company Phone */}
+
             <FormField
               control={form.control}
               name="companyPhone"
@@ -194,7 +185,7 @@ export function TenantEditModal({
                 <FormItem>
                   <FormLabel className="text-gray-300 flex items-center gap-2">
                     <PhoneIcon className="h-4 w-4" />
-                    Teléfono de la Empresa
+                    Company Phone
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -209,23 +200,21 @@ export function TenantEditModal({
               )}
             />
 
-            {/* Current Plan */}
             <FormField
               control={form.control}
               name="currentPlanId"
               render={({ field }) => {
-                // Find current plan to display name
                 const currentPlan = saasPlans.find((p) => p.id === field.value);
                 
                 return (
                   <FormItem>
                     <FormLabel className="text-gray-300 flex items-center gap-2">
                       <CreditCardIcon className="h-4 w-4" />
-                      Plan de Suscripción
+                      Subscription Plan
                     </FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        console.log('Plan seleccionado (ID):', value);
+                        console.log('Selected plan (ID):', value);
                         field.onChange(value);
                       }}
                       value={field.value}
@@ -234,21 +223,21 @@ export function TenantEditModal({
                       <FormControl>
                         <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white focus:border-[#fe6b24]">
                           <SelectValue 
-                            placeholder="Seleccione un plan"
+                            placeholder="Select a plan"
                           >
-                            {currentPlan ? currentPlan.name : "Seleccione un plan"}
+                            {currentPlan ? currentPlan.name : "Select a plan"}
                           </SelectValue>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="bg-gray-900 border-gray-700">
                         {isLoadingPlans ? (
                           <div className="px-2 py-6 text-center text-sm text-gray-400">
-                            Cargando planes...
+                            Loading plans...
                           </div>
                         ) : saasPlans.length === 0 ? (
                           <div className="px-2 py-6 text-center">
-                            <p className="text-sm text-gray-400 mb-1">No hay planes activos</p>
-                            <p className="text-xs text-gray-500">Crea planes en Firebase Console → saas_plans</p>
+                            <p className="text-sm text-gray-400 mb-1">No active plans</p>
+                            <p className="text-xs text-gray-500">Create plans in Firebase Console → saas_plans</p>
                           </div>
                         ) : (
                           saasPlans.map((plan) => (
@@ -260,7 +249,7 @@ export function TenantEditModal({
                               <div className="flex flex-col">
                                 <span className="font-medium">{plan.name}</span>
                                 <span className="text-xs text-gray-400">
-                                  ${plan.price.toFixed(2)}/mes · {plan.max_clients} clientes · {plan.max_gyms} gym{plan.max_gyms > 1 ? 's' : ''}
+                                  ${plan.price.toFixed(2)}/month · {plan.max_clients} clients · {plan.max_gyms} gym{plan.max_gyms > 1 ? 's' : ''}
                                 </span>
                               </div>
                             </SelectItem>
@@ -274,18 +263,16 @@ export function TenantEditModal({
               }}
             />
 
-            {/* Error Display */}
             {updateTenant.isError && (
               <Alert className="bg-red-500/10 border-red-500/30">
                 <AlertDescription className="text-red-400">
                   {updateTenant.error instanceof Error
                     ? updateTenant.error.message
-                    : "Error al actualizar el tenant"}
+                    : "Error updating tenant"}
                 </AlertDescription>
               </Alert>
             )}
 
-            {/* Action Buttons */}
             <div className="flex justify-end gap-3 pt-4">
               <Button
                 type="button"
@@ -294,7 +281,7 @@ export function TenantEditModal({
                 disabled={updateTenant.isPending}
                 className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
               >
-                Cancelar
+                Cancel
               </Button>
               <Button
                 type="submit"
@@ -304,10 +291,10 @@ export function TenantEditModal({
                 {updateTenant.isPending ? (
                   <>
                     <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
-                    Guardando...
+                    Saving...
                   </>
                 ) : (
-                  "Guardar Cambios"
+                  "Save Changes"
                 )}
               </Button>
             </div>

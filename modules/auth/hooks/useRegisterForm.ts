@@ -52,7 +52,7 @@ export function useRegisterForm() {
       }
     } catch (err) {
       console.error('Register error:', err);
-      setError('Error inesperado al crear la cuenta');
+      setError('Unexpected error creating account');
     } finally {
       setIsLoading(false);
     }
@@ -74,14 +74,14 @@ export function useRegisterForm() {
 function getFirebaseErrorMessage(errorCode: string): string {
   switch (errorCode) {
     case 'auth/email-already-in-use':
-      return 'Este email ya está registrado';
+      return 'This email is already registered';
     case 'auth/invalid-email':
-      return 'El correo electrónico no es válido';
+      return 'Email is not valid';
     case 'auth/operation-not-allowed':
-      return 'Operación no permitida';
+      return 'Operation not allowed';
     case 'auth/weak-password':
-      return 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres';
+      return 'Password is too weak. Must be at least 6 characters';
     default:
-      return 'Error al crear la cuenta';
+      return 'Error creating account';
   }
 }

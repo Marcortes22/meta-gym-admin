@@ -27,7 +27,7 @@ export async function loginUser(
     if (!isAuthorized) {
       return {
         success: false,
-        error: 'No tienes autorización para acceder al panel de administración',
+        error: 'You are not authorized to access the administration panel',
       };
     }
     const { data: userCredential, error: authError } = await signIn(email, password);
@@ -47,7 +47,7 @@ export async function loginUser(
     console.error('Login service error:', error);
     return {
       success: false,
-      error: 'Error inesperado al iniciar sesión',
+      error: 'Unexpected error signing in',
     };
   }
 }
@@ -62,10 +62,10 @@ export async function logoutUser(
   try {
     const { error } = await signOut();
     if (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error('Error signing out:', error);
       return {
         success: false,
-        error: 'Error al cerrar sesión',
+        error: 'Error signing out',
       };
     }
     clearSessionCookie();
@@ -74,20 +74,20 @@ export async function logoutUser(
     console.error('Logout service error:', error);
     return {
       success: false,
-      error: 'Error inesperado al cerrar sesión',
+      error: 'Unexpected error signing out',
     };
   }
 }
 
 function getFirebaseErrorMessage(errorCode: string): string {
   const errorMessages: Record<string, string> = {
-    'auth/invalid-email': 'El correo electrónico no es válido',
-    'auth/user-disabled': 'Esta cuenta ha sido deshabilitada',
-    'auth/user-not-found': 'Credenciales inválidas',
-    'auth/wrong-password': 'Credenciales inválidas',
-    'auth/invalid-credential': 'Credenciales inválidas',
-    'auth/too-many-requests': 'Demasiados intentos fallidos. Intenta más tarde',
+    'auth/invalid-email': 'Email is not valid',
+    'auth/user-disabled': 'This account has been disabled',
+    'auth/user-not-found': 'Invalid credentials',
+    'auth/wrong-password': 'Invalid credentials',
+    'auth/invalid-credential': 'Invalid credentials',
+    'auth/too-many-requests': 'Too many failed attempts. Try again later',
   };
 
-  return errorMessages[errorCode] || 'Credenciales inválidas';
+  return errorMessages[errorCode] || 'Invalid credentials';
 }

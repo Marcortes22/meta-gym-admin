@@ -89,23 +89,23 @@ export function ApproveRequestDialog({
       <DialogContent className="max-w-lg bg-[#0f0f10] border-gray-800 text-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">
-            Aprobar Solicitud
+            Approve Request
           </DialogTitle>
           <DialogDescription className="text-gray-400 mt-1">
-            Crea una cuenta de administrador para{' '}
+            Create an administrator account for{' '}
             <span className="font-semibold text-[#fe6b24]">{request.gym_name}</span>
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-4">
-          {/* Información del gym */}
+          {/* Gym Information */}
           <div className="p-4 bg-[#1a1a1b] rounded-lg border border-gray-800 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">Gimnasio:</span>
+              <span className="text-sm text-gray-400">Gym:</span>
               <span className="text-white font-semibold">{request.gym_name}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">Administrador:</span>
+              <span className="text-sm text-gray-400">Administrator:</span>
               <span className="text-white">
                 {request.admin_name} {request.admin_surname1}
               </span>
@@ -118,11 +118,11 @@ export function ApproveRequestDialog({
             </div>
           </div>
 
-          {/* Email */}
+
           <div className="space-y-2">
             <Label htmlFor="adminEmail" className="text-gray-300 font-semibold flex items-center gap-2">
               <MailIcon className="h-4 w-4 text-[#fe6b24]" />
-              Correo Electrónico del Administrador
+              Administrator Email
             </Label>
             <Input
               id="adminEmail"
@@ -136,16 +136,15 @@ export function ApproveRequestDialog({
             )}
           </div>
 
-          {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="adminPassword" className="text-gray-300 font-semibold flex items-center gap-2">
               <KeyIcon className="h-4 w-4 text-[#fe6b24]" />
-              Contraseña
+              Password
             </Label>
             <Input
               id="adminPassword"
               type="password"
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Minimum 6 characters"
               className="bg-[#1a1a1b] border-gray-700 text-white placeholder:text-gray-500"
               {...register('adminPassword')}
             />
@@ -154,16 +153,16 @@ export function ApproveRequestDialog({
             )}
           </div>
 
-          {/* Confirm Password */}
+
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-gray-300 font-semibold flex items-center gap-2">
               <KeyIcon className="h-4 w-4 text-[#fe6b24]" />
-              Confirmar Contraseña
+              Confirm Password
             </Label>
             <Input
               id="confirmPassword"
               type="password"
-              placeholder="Repite la contraseña"
+              placeholder="Repeat password"
               className="bg-[#1a1a1b] border-gray-700 text-white placeholder:text-gray-500"
               {...register('confirmPassword')}
             />
@@ -180,7 +179,7 @@ export function ApproveRequestDialog({
               disabled={approveRequest.isPending}
               className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
             >
-              Cancelar
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -190,12 +189,12 @@ export function ApproveRequestDialog({
               {approveRequest.isPending ? (
                 <>
                   <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
-                  Aprobando...
+                  Approving...
                 </>
               ) : (
                 <>
                   <CheckCircleIcon className="h-4 w-4 mr-2" />
-                  Aprobar Solicitud
+                  Approve Request
                 </>
               )}
             </Button>
@@ -206,7 +205,7 @@ export function ApproveRequestDialog({
               <p className="text-sm text-red-400">
                 {approveRequest.error instanceof Error
                   ? approveRequest.error.message
-                  : 'Error al aprobar la solicitud'}
+                  : 'Error approving request'}
               </p>
             </div>
           )}

@@ -1,6 +1,4 @@
-/**
- * Tenant Details Page - Payment History and Subscription Details
- */
+
 
 "use client";
 
@@ -36,17 +34,11 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
   const { data: saasPlans = [], isLoading: loadingPlans } = useActiveSaasPlans();
   const { data: payments = [], isLoading: loadingPayments } = usePaymentsByTenant(tenantId);
 
-  // Debug logs
-  console.log('🔍 [TenantDetailsPage] tenantId:', tenantId);
-  console.log('📊 [TenantDetailsPage] tenant:', tenant);
-  console.log('💳 [TenantDetailsPage] payments:', payments);
-  console.log('⏳ [TenantDetailsPage] loadingPayments:', loadingPayments);
-
   const currentPlan = tenant && saasPlans.length > 0
     ? saasPlans.find(p => p.id === tenant.currentPlanId)
     : null;
 
-  // Handle errors
+
   useEffect(() => {
     if (tenantError) {
       toast({
@@ -81,7 +73,6 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
 
   return (
     <div className="space-y-6 pb-8 px-6 max-w-[1600px] mx-auto">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <Button
           onClick={handleBack}
@@ -100,11 +91,8 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
         </div>
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column - Tenant Information */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Tenant Information Card */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg text-white">Tenant Information</CardTitle>
@@ -142,7 +130,6 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
             </CardContent>
           </Card>
 
-          {/* Payment History */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg text-white">Payment History</CardTitle>
@@ -166,7 +153,6 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
           </Card>
         </div>
 
-        {/* Right Column - Subscription Details */}
         <div className="lg:col-span-5">
           <Card className="bg-gray-900/50 border-gray-800 h-fit">
             <CardHeader className="pb-4">
@@ -186,7 +172,7 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
                 )}
               </div>
 
-              {/* Status */}
+
               <div className="space-y-1.5">
                 <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Status</p>
                 <Badge
@@ -197,7 +183,7 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
                 </Badge>
               </div>
 
-              {/* Start Date */}
+
               <div className="space-y-1.5">
                 <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Start Date</p>
                 <div className="flex items-center gap-2">
@@ -208,7 +194,7 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
                 </div>
               </div>
 
-              {/* End Date */}
+ 
               <div className="space-y-1.5">
                 <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">End Date</p>
                 <div className="flex items-center gap-2">
@@ -226,9 +212,7 @@ export function TenantDetailsPage({ tenantId }: TenantDetailsPageProps) {
   );
 }
 
-/**
- * Loading skeleton for tenant details page
- */
+
 function TenantDetailsPageSkeleton() {
   return (
     <div className="space-y-6 pb-8">

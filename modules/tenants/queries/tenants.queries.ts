@@ -1,6 +1,3 @@
-/**
- * Firebase queries for tenant operations
- */
 
 import {
   collection,
@@ -16,10 +13,6 @@ import {
 import { db } from "@/shared/lib/firebase/client";
 import type { Tenant, UpdateTenantInput } from "@/shared/types/tenant.types";
 import { createPaymentRecord } from "./payments.queries";
-
-/**
- * Fetch all tenants from Firestore
- */
 export async function fetchTenants(): Promise<Tenant[]> {
   try {
     const tenantsRef = collection(db, "tenants");
@@ -54,9 +47,6 @@ export async function fetchTenants(): Promise<Tenant[]> {
   }
 }
 
-/**
- * Fetch active tenants
- */
 export async function fetchActiveTenants(): Promise<Tenant[]> {
   try {
     const tenantsRef = collection(db, "tenants");
@@ -95,9 +85,6 @@ export async function fetchActiveTenants(): Promise<Tenant[]> {
   }
 }
 
-/**
- * Fetch single tenant by ID
- */
 export async function fetchTenantById(id: string): Promise<Tenant> {
   try {
     const tenantRef = doc(db, "tenants", id);
@@ -131,9 +118,7 @@ export async function fetchTenantById(id: string): Promise<Tenant> {
   }
 }
 
-/**
- * Update tenant information
- */
+
 export async function updateTenant(
   input: UpdateTenantInput
 ): Promise<void> {
@@ -148,9 +133,6 @@ export async function updateTenant(
   }
 }
 
-/**
- * Extend tenant subscription by 30 days and create payment record
- */
 export async function extendTenantSubscription(params: {
   tenantId: string;
   amount: number;
@@ -171,26 +153,18 @@ export async function extendTenantSubscription(params: {
       currentEndDate instanceof Timestamp
         ? currentEndDate.toDate()
         : new Date(currentEndDate);
-
-    // Add 30 days
     const newEndDate = new Date(currentDate);
     newEndDate.setDate(newEndDate.getDate() + 30);
 
-    // The subscriptionId doesn't exist - we use tenantId directly
-    // as the collection we need to update is tenant_subscriptions which uses tenantId
-    
-    // Create payment record with provided amount
+
     await createPaymentRecord({
       tenantId,
-      subscriptionId: tenantId, // Use tenantId as subscription identifier
+      subscriptionId: tenantId,
       amount,
       periodStart: currentDate,
       periodEnd: newEndDate,
       notes: notes || "Payment received - subscription extended for 30 days",
     });
-
-    // Update tenant subscription date (this is done in createPaymentRecord)
-    // but we'll update tenant directly as well for consistency
     await updateDoc(tenantRef, {
       subscriptionEndDate: Timestamp.fromDate(newEndDate),
     });
@@ -204,9 +178,6 @@ export async function extendTenantSubscription(params: {
   }
 }
 
-/**
- * Toggle tenant active status
- */
 export async function toggleTenantStatus(tenantId: string): Promise<void> {
   try {
     const tenantRef = doc(db, "tenants", tenantId);

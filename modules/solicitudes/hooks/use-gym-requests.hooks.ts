@@ -12,9 +12,7 @@ import { GymRequest } from '@/shared/types';
 import { queryKeys } from '@/shared/lib/query-keys';
 import { useAuth } from '@/shared/hooks/useAuth';
 
-/**
- * Hook para obtener todas las solicitudes
- */
+
 export function useGymRequests() {
   return useQuery({
     queryKey: queryKeys.gymRequests.all,
@@ -22,31 +20,26 @@ export function useGymRequests() {
   });
 }
 
-/**
- * Hook para obtener solicitudes por estado
- */
+
 export function useGymRequestsByState(state: GymRequest['state'] | 'all') {
   return useQuery({
     queryKey: queryKeys.gymRequests.byState(state),
     queryFn: async () => {
-      console.log('Fetching requests for state:', state); // Debug
+      console.log('Fetching requests for state:', state); 
       if (state === 'all') {
         const data = await getAllGymRequests();
-        console.log('All requests:', data.length); // Debug
+        console.log('All requests:', data.length); 
         return data;
       }
       const data = await getGymRequestsByState(state);
-      console.log(`Requests for ${state}:`, data.length); // Debug
+      console.log(`Requests for ${state}:`, data.length);
       return data;
     },
-    staleTime: 0, // Siempre refetch para ver cambios inmediatos
+    staleTime: 0, 
   });
 }
 
-/**
- * Hook para aprobar una solicitud (proceso completo)
- * Crea tenant, subscription, gym, usuario auth y actualiza la solicitud
- */
+
 export function useApproveRequest() {
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -76,15 +69,12 @@ export function useApproveRequest() {
       return await approveGymRequestService(input);
     },
     onSuccess: () => {
-      // Invalidar todas las queries de solicitudes para refrescar la lista
       queryClient.invalidateQueries({ queryKey: queryKeys.gymRequests.all });
     },
   });
 }
 
-/**
- * Hook para rechazar una solicitud
- */
+
 export function useRejectRequest() {
   const queryClient = useQueryClient();
 

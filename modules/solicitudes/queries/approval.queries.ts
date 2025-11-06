@@ -14,7 +14,7 @@ import {
 } from '@/shared/types';
 
 /**
- * Crear un nuevo tenant en Firestore
+ * Create a new tenant 
  */
 export async function createTenant(input: CreateTenantInput): Promise<void> {
   const tenantRef = doc(db, 'tenants', input.id);
@@ -33,7 +33,7 @@ export async function createTenant(input: CreateTenantInput): Promise<void> {
 }
 
 /**
- * Crear una nueva suscripción en Firestore
+ * Create a new subscription 
  */
 export async function createSubscription(input: CreateSubscriptionInput): Promise<string> {
   const subscriptionsRef = collection(db, 'tenant_subscriptions');
@@ -57,7 +57,7 @@ export async function createSubscription(input: CreateSubscriptionInput): Promis
 }
 
 /**
- * Crear un nuevo gimnasio en Firestore
+ * Create a new gym 
  */
 export async function createGym(input: CreateGymInput): Promise<string> {
   const gymsRef = collection(db, 'gyms');
@@ -82,7 +82,7 @@ export async function createGym(input: CreateGymInput): Promise<string> {
 }
 
 /**
- * Crear un usuario administrador en Firestore (colección users)
+ * Create an administrator user 
  */
 export async function createAdminUser(input: CreateAdminUserInput): Promise<void> {
   const userRef = doc(db, 'users', input.user_id);
@@ -108,7 +108,7 @@ export async function createAdminUser(input: CreateAdminUserInput): Promise<void
 }
 
 /**
- * Generar un ID único para tenant
+ * Generate a unique ID for tenant
  */
 export function generateTenantId(): string {
   const randomStr = Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -116,7 +116,7 @@ export function generateTenantId(): string {
 }
 
 /**
- * Generar un código único para gym
+ * Generate a unique code for gym
  */
 export function generateGymCode(): string {
   const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
