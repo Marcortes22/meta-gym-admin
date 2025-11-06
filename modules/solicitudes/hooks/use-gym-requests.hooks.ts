@@ -25,14 +25,11 @@ export function useGymRequestsByState(state: GymRequest['state'] | 'all') {
   return useQuery({
     queryKey: queryKeys.gymRequests.byState(state),
     queryFn: async () => {
-      console.log('Fetching requests for state:', state); 
       if (state === 'all') {
         const data = await getAllGymRequests();
-        console.log('All requests:', data.length); 
         return data;
       }
       const data = await getGymRequestsByState(state);
-      console.log(`Requests for ${state}:`, data.length);
       return data;
     },
     staleTime: 0, 

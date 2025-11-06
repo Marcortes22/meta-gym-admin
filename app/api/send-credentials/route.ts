@@ -6,9 +6,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { toEmail, toName, gymName, email, password, tenantId } = body;
+    const { toEmail, toName, gymName, email, password, tenantId, gymCode } = body;
 
-    if (!toEmail || !toName || !gymName || !email || !password || !tenantId) {
+    if (!toEmail || !toName || !gymName || !email || !password || !tenantId || !gymCode) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -47,6 +47,10 @@ export async function POST(request: NextRequest) {
               <div style="background: #1a1a1d; border: 1px solid #262626; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
                 <div style="color: #a3a3a3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Password</div>
                 <div style="color: #fe6b24; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold;">${password}</div>
+              </div>
+              <div style="background: #1a1a1d; border: 1px solid #262626; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
+                <div style="color: #a3a3a3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Gym Code</div>
+                <div style="color: #fe6b24; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold;">${gymCode}</div>
               </div>
             </div>
 
@@ -92,17 +96,14 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      console.error('❌ Error sending email:', error);
       return NextResponse.json(
         { error: 'Failed to send email', details: error },
         { status: 500 }
       );
     }
 
-    console.log('✅ Email sent successfully to:', toEmail, 'ID:', data?.id);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error('Error sending email:', error);
     return NextResponse.json(
       { error: 'Failed to send email' },
       { status: 500 }

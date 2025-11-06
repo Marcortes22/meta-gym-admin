@@ -54,7 +54,6 @@ export function useAuth() {
 
       return { data: userCredential, error: null };
     } catch (error: any) {
-      console.error('Sign in error:', error);
       return { data: null, error };
     }
   };
@@ -69,7 +68,6 @@ export function useAuth() {
 
       return { data: userCredential, error: null };
     } catch (error: any) {
-      console.error('Sign up error:', error);
       return { data: null, error };
     }
   };
@@ -80,7 +78,6 @@ export function useAuth() {
       setUser(null);
       return { error: null };
     } catch (error: any) {
-      console.error('Sign out error:', error);
       return { error };
     }
   };
@@ -89,7 +86,6 @@ export function useAuth() {
     try {
       return auth.currentUser;
     } catch (error) {
-      console.error('Check auth error:', error);
       return null;
     }
   };

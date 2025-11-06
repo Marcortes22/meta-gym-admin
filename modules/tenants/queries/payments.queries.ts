@@ -86,7 +86,6 @@ async function validateTenantExists(tenantId: string): Promise<boolean> {
     const tenantSnap = await getDoc(tenantRef);
     return tenantSnap.exists();
   } catch (error) {
-    console.error('Error validating tenant:', error);
     return false;
   }
 }
@@ -120,11 +119,8 @@ export async function createPaymentRecord(input: CreatePaymentInput): Promise<st
       createdAt: serverTimestamp(),
     });
 
-    console.log('✅ Payment record created:', paymentDoc.id);
-
     return paymentDoc.id;
   } catch (error) {
-    console.error('Error creating payment record:', error);
     throw new Error(
       error instanceof Error
         ? `Failed to create payment: ${error.message}`
@@ -172,10 +168,6 @@ export async function getPaymentsByTenant(tenantId: string): Promise<Subscriptio
 
     return payments;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-    }
     return [];
   }
 }
@@ -213,7 +205,7 @@ export async function getAllPayments(): Promise<SubscriptionPayment[]> {
       } as SubscriptionPayment;
     });
   } catch (error) {
-    console.error('Error fetching all payments:', error);
     return [];
   }
 }
+

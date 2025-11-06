@@ -18,7 +18,6 @@ export async function getUserNameByUid(uid: string): Promise<string | null> {
     const userData = userSnap.data();
     return userData.name || uid;
   } catch (error) {
-    console.error('Error fetching user name:', error);
     return null;
   }
 }

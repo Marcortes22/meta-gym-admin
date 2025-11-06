@@ -31,9 +31,5 @@ export function getFirebaseConfig(): FirebaseConfig {
     );
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`🔥 Firebase initialized for project: ${config.projectId}`);
-  }
-
   return config;
 }

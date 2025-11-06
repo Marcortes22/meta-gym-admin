@@ -30,11 +30,6 @@ export function SolicitudesPage() {
 
   const { data: requests = [], isLoading, error } = useGymRequestsByState(activeFilter);
 
-  console.log('Filter:', activeFilter);
-  console.log('Loading:', isLoading);
-  console.log('Requests:', requests);
-  console.log('Error:', error);
-
   const handleViewDetails = (request: GymRequest) => {
     setSelectedRequest(request);
     setIsDetailsOpen(true);

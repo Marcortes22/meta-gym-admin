@@ -24,7 +24,6 @@ const GYM_REQUESTS_COLLECTION = 'register_requests';
  */
 function mapDocToGymRequest(doc: DocumentData): GymRequest {
   const data = doc.data();
-  console.log('Mapping document:', doc.id, data); // Debug
   
   return {
     id: doc.id,

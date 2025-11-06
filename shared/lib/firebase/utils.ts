@@ -40,7 +40,6 @@ export async function getDocument<T = DocumentData>(
     
     return { id: docSnap.id, ...docSnap.data() } as T;
   } catch (error) {
-    console.error(`Error getting document from ${collectionName}:`, error);
     throw error;
   }
 }
@@ -59,7 +58,6 @@ export async function getAllDocuments<T = DocumentData>(
       ...doc.data()
     })) as T[];
   } catch (error) {
-    console.error(`Error getting documents from ${collectionName}:`, error);
     throw error;
   }
 }
@@ -79,7 +77,6 @@ export async function createDocument<T = DocumentData>(
       updated_at: timestamp,
     });
   } catch (error) {
-    console.error(`Error creating document in ${collectionName}:`, error);
     throw error;
   }
 }
@@ -98,7 +95,6 @@ export async function updateDocument<T = Partial<DocumentData>>(
       updated_at: timestamp,
     });
   } catch (error) {
-    console.error(`Error updating document in ${collectionName}:`, error);
     throw error;
   }
 }
@@ -111,7 +107,6 @@ export async function deleteDocument(
     const docRef = doc(db, collectionName, documentId);
     await deleteDoc(docRef);
   } catch (error) {
-    console.error(`Error deleting document from ${collectionName}:`, error);
     throw error;
   }
 }

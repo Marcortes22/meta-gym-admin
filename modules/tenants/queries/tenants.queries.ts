@@ -42,7 +42,6 @@ export async function fetchTenants(): Promise<Tenant[]> {
 
     return tenants;
   } catch (error) {
-    console.error("Error fetching tenants:", error);
     throw new Error("Failed to fetch tenants");
   }
 }
@@ -80,7 +79,6 @@ export async function fetchActiveTenants(): Promise<Tenant[]> {
 
     return tenants;
   } catch (error) {
-    console.error("Error fetching active tenants:", error);
     throw new Error("Failed to fetch active tenants");
   }
 }
@@ -113,7 +111,6 @@ export async function fetchTenantById(id: string): Promise<Tenant> {
           : new Date(data.createdAt),
     };
   } catch (error) {
-    console.error("Error fetching tenant:", error);
     throw new Error(`Failed to fetch tenant with ID ${id}`);
   }
 }
@@ -128,7 +125,6 @@ export async function updateTenant(
 
     await updateDoc(tenantRef, updateData);
   } catch (error) {
-    console.error("Error updating tenant:", error);
     throw new Error("Failed to update tenant");
   }
 }
@@ -171,7 +167,6 @@ export async function extendTenantSubscription(params: {
 
     return newEndDate;
   } catch (error) {
-    console.error("Error extending subscription:", error);
     throw new Error(
       error instanceof Error ? error.message : "Failed to extend subscription"
     );
@@ -193,7 +188,6 @@ export async function toggleTenantStatus(tenantId: string): Promise<void> {
       is_active: !currentStatus,
     });
   } catch (error) {
-    console.error("Error toggling tenant status:", error);
     throw new Error("Failed to toggle tenant status");
   }
 }

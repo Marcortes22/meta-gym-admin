@@ -10,10 +10,6 @@ export default function LogOutButton() {
     await logout();
   };
 
-  if (error) {
-    console.error('Logout error:', error);
-  }
-
   return (
     <Button 
       onClick={handleLogout} 

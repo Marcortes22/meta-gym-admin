@@ -30,7 +30,6 @@ export function useLoginForm() {
       }
     },
     onError: (error) => {
-      console.error('Login mutation error:', error);
     },
   });
 

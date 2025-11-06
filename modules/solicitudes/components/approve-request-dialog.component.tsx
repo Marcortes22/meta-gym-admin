@@ -87,7 +87,6 @@ export function ApproveRequestDialog({
       
       handleClose();
     } catch (error) {
-      console.error('Error approving request:', error);
       toast({
         variant: 'error',
         title: 'Approval Failed',

@@ -51,7 +51,6 @@ export function useRegisterForm() {
         router.refresh();
       }
     } catch (err) {
-      console.error('Register error:', err);
       setError('Unexpected error creating account');
     } finally {
       setIsLoading(false);

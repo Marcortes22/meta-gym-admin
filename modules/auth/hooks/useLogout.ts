@@ -24,7 +24,6 @@ export function useLogout() {
       router.refresh();
       return true;
     } catch (err) {
-      console.error('Logout hook error:', err);
       setError('Error inesperado al cerrar sesión');
       return false;
     } finally {

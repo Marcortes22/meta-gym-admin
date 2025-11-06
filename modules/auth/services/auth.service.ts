@@ -44,7 +44,6 @@ export async function loginUser(
 
     return { success: true };
   } catch (error) {
-    console.error('Login service error:', error);
     return {
       success: false,
       error: 'Unexpected error signing in',
@@ -62,7 +61,6 @@ export async function logoutUser(
   try {
     const { error } = await signOut();
     if (error) {
-      console.error('Error signing out:', error);
       return {
         success: false,
         error: 'Error signing out',
@@ -71,7 +69,6 @@ export async function logoutUser(
     clearSessionCookie();
     return { success: true };
   } catch (error) {
-    console.error('Logout service error:', error);
     return {
       success: false,
       error: 'Unexpected error signing out',
