@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GymRequest } from '@/shared/types';
 import {
@@ -41,6 +42,7 @@ export function ApproveRequestDialog({
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ApproveRequestFormData>({
     resolver: zodResolver(approveRequestSchema),
     defaultValues: {
@@ -54,6 +56,18 @@ export function ApproveRequestDialog({
     reset();
     onOpenChange(false);
   };
+
+  // If a request changes, reset the form and default to using the request email
+  const [useRequestEmail, setUseRequestEmail] = useState<boolean>(true);
+
+  useEffect(() => {
+    reset({
+      adminEmail: request?.email || '',
+      adminPassword: '',
+      confirmPassword: '',
+    });
+    setUseRequestEmail(true);
+  }, [request, reset]);
 
   const onSubmit = async (data: ApproveRequestFormData) => {
     if (!request) return;
@@ -120,16 +134,38 @@ export function ApproveRequestDialog({
 
 
           <div className="space-y-2">
-            <Label htmlFor="adminEmail" className="text-gray-300 font-semibold flex items-center gap-2">
-              <MailIcon className="h-4 w-4 text-[#fe6b24]" />
-              Administrator Email
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-gray-300 font-semibold flex items-center gap-2">
+                <MailIcon className="h-4 w-4 text-[#fe6b24]" />
+                Administrator Email
+              </Label>
+              <div className="flex items-center gap-2">
+                <input
+                  id="useRequestEmail"
+                  type="checkbox"
+                  className="w-4 h-4 text-[#fe6b24] bg-gray-700 border-gray-600 rounded"
+                  checked={useRequestEmail}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setUseRequestEmail(checked);
+                    if (checked) {
+                      setValue('adminEmail', request?.email || '');
+                    }
+                  }}
+                />
+                <label htmlFor="useRequestEmail" className="text-sm text-gray-400">
+                  Use email from request
+                </label>
+              </div>
+            </div>
+
             <Input
               id="adminEmail"
               type="email"
-              placeholder="admin@gimnasio.com"
+              placeholder="admin@example.com"
               className="bg-[#1a1a1b] border-gray-700 text-white placeholder:text-gray-500"
               {...register('adminEmail')}
+              disabled={useRequestEmail}
             />
             {errors.adminEmail && (
               <p className="text-sm text-red-400">{errors.adminEmail.message}</p>

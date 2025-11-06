@@ -117,7 +117,7 @@ export function MarkPaymentModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto pr-2 space-y-4">
+        <div className="flex-1 overflow-y-auto pr-2 space-y-4 details-scrollbar">
 
           {/* Tenant Info */}
           <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
