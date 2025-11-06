@@ -4,10 +4,7 @@ import { getUserByEmail } from '../queries/users.queries';
 import { queryKeys } from '@/shared/lib/query-keys';
 import { AdminUser } from '../types/auth.types';
 
-/**
- * Hook para obtener los datos del usuario administrador actual
- * Utiliza TanStack Query para caching y revalidación automática
- */
+
 export function useCurrentAdmin() {
   const { user } = useAuth();
 

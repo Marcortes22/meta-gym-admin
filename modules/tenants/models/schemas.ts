@@ -1,29 +1,24 @@
-/**
- * Zod validation schemas for tenant forms
- */
 
 import { z } from "zod";
 
-/**
- * Schema for updating tenant information
- */
+
 export const updateTenantSchema = z.object({
   companyName: z
     .string()
-    .min(2, "El nombre debe tener al menos 2 caracteres")
-    .max(100, "El nombre no puede exceder 100 caracteres"),
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name cannot exceed 100 characters"),
   companyEmail: z
     .string()
-    .email("Ingrese un email válido")
-    .max(100, "El email no puede exceder 100 caracteres"),
+    .email("Enter a valid email")
+    .max(100, "Email cannot exceed 100 characters"),
   companyPhone: z
     .string()
-    .min(8, "El teléfono debe tener al menos 8 dígitos")
-    .max(20, "El teléfono no puede exceder 20 caracteres")
-    .regex(/^[0-9+\-\s()]+$/, "El teléfono solo puede contener números y símbolos válidos"),
+    .min(8, "Phone must be at least 8 digits")
+    .max(20, "Phone cannot exceed 20 characters")
+    .regex(/^[0-9+\-\s()]+$/, "Phone can only contain numbers and valid symbols"),
   currentPlanId: z
     .string()
-    .min(1, "Debe seleccionar un plan"),
+    .min(1, "Must select a plan"),
 });
 
 export type UpdateTenantFormData = z.infer<typeof updateTenantSchema>;

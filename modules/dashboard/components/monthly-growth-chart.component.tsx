@@ -15,8 +15,6 @@ export function MonthlyGrowthChart({ data, growthPercentage }: MonthlyGrowthChar
 
   useEffect(() => {
     if (!chartContainerRef.current || data.length === 0) return;
-
-    // Crear el gráfico
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
@@ -54,8 +52,7 @@ export function MonthlyGrowthChart({ data, growthPercentage }: MonthlyGrowthChar
 
     chartRef.current = chart;
 
-    // Preparar datos para la gráfica (suma de tenants + requests)
-    // Crear fechas en formato yyyy-mm-dd para cada mes
+
     const now = new Date();
     const chartData = data.map((item, index) => {
       const date = new Date(now.getFullYear(), now.getMonth() - (data.length - 1 - index), 1);
@@ -69,7 +66,6 @@ export function MonthlyGrowthChart({ data, growthPercentage }: MonthlyGrowthChar
       };
     });
 
-    // Crear serie de área usando la API v5 correcta
     const areaSeries = chart.addSeries(AreaSeries, {
       lineColor: '#fe6b24',
       topColor: 'rgba(254, 107, 36, 0.4)',
@@ -78,11 +74,7 @@ export function MonthlyGrowthChart({ data, growthPercentage }: MonthlyGrowthChar
     });
 
     areaSeries.setData(chartData);
-
-    // Ajustar el contenido visible
     chart.timeScale().fitContent();
-
-    // Manejar resize
     const handleResize = () => {
       if (chartContainerRef.current && chartRef.current) {
         chartRef.current.applyOptions({
@@ -123,10 +115,7 @@ export function MonthlyGrowthChart({ data, growthPercentage }: MonthlyGrowthChar
           </div>
         </div>
       </div>
-      
       <div ref={chartContainerRef} className="w-full" />
-      
-      {/* Leyenda */}
       <div className="mt-4 flex items-center justify-center gap-6 text-sm">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-[#fe6b24]" />

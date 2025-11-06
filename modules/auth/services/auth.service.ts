@@ -2,17 +2,13 @@ import { UserCredential } from 'firebase/auth';
 import { getUserByEmail } from '../queries/users.queries';
 import { AuthResult, SignInFunction } from '../types/auth.types';
 
-/**
- * Verifica si un usuario existe en la colección global_users
- */
+
 export async function checkUserAuthorization(email: string): Promise<boolean> {
   const querySnapshot = await getUserByEmail(email);
   return !querySnapshot.empty;
 }
 
-/**
- * Establece la cookie de sesión con el token de Firebase
- */
+
 export async function setSessionCookie(userCredential: UserCredential): Promise<void> {
   if (userCredential?.user) {
     const token = await userCredential.user.getIdToken();
@@ -20,26 +16,20 @@ export async function setSessionCookie(userCredential: UserCredential): Promise<
   }
 }
 
-/**
- * Maneja el proceso completo de login
- */
 export async function loginUser(
   email: string,
   password: string,
   signIn: SignInFunction
 ): Promise<AuthResult> {
   try {
-    // 1. Verificar autorización en global_users
     const isAuthorized = await checkUserAuthorization(email);
     
     if (!isAuthorized) {
       return {
         success: false,
-        error: 'No tienes autorización para acceder al panel de administración',
+        error: 'You are not authorized to access the administration panel',
       };
     }
-
-    // 2. Autenticar con Firebase Auth
     const { data: userCredential, error: authError } = await signIn(email, password);
 
     if (authError) {
@@ -48,8 +38,6 @@ export async function loginUser(
         error: getFirebaseErrorMessage(authError.code),
       };
     }
-
-    // 3. Establecer cookie de sesión
     if (userCredential) {
       await setSessionCookie(userCredential);
     }
@@ -59,61 +47,47 @@ export async function loginUser(
     console.error('Login service error:', error);
     return {
       success: false,
-      error: 'Error inesperado al iniciar sesión',
+      error: 'Unexpected error signing in',
     };
   }
 }
 
-/**
- * Elimina la cookie de sesión
- */
 export function clearSessionCookie(): void {
   document.cookie = '__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 }
 
-/**
- * Maneja el proceso completo de logout
- */
 export async function logoutUser(
   signOut: () => Promise<{ error: any }>
 ): Promise<AuthResult> {
   try {
-    // 1. Cerrar sesión en Firebase Auth
     const { error } = await signOut();
-    
     if (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error('Error signing out:', error);
       return {
         success: false,
-        error: 'Error al cerrar sesión',
+        error: 'Error signing out',
       };
     }
-
-    // 2. Eliminar cookie de sesión
     clearSessionCookie();
-
     return { success: true };
   } catch (error) {
     console.error('Logout service error:', error);
     return {
       success: false,
-      error: 'Error inesperado al cerrar sesión',
+      error: 'Unexpected error signing out',
     };
   }
 }
 
-/**
- * Mapea códigos de error de Firebase a mensajes legibles
- */
 function getFirebaseErrorMessage(errorCode: string): string {
   const errorMessages: Record<string, string> = {
-    'auth/invalid-email': 'El correo electrónico no es válido',
-    'auth/user-disabled': 'Esta cuenta ha sido deshabilitada',
-    'auth/user-not-found': 'Credenciales inválidas',
-    'auth/wrong-password': 'Credenciales inválidas',
-    'auth/invalid-credential': 'Credenciales inválidas',
-    'auth/too-many-requests': 'Demasiados intentos fallidos. Intenta más tarde',
+    'auth/invalid-email': 'Email is not valid',
+    'auth/user-disabled': 'This account has been disabled',
+    'auth/user-not-found': 'Invalid credentials',
+    'auth/wrong-password': 'Invalid credentials',
+    'auth/invalid-credential': 'Invalid credentials',
+    'auth/too-many-requests': 'Too many failed attempts. Try again later',
   };
 
-  return errorMessages[errorCode] || 'Credenciales inválidas';
+  return errorMessages[errorCode] || 'Invalid credentials';
 }

@@ -1,6 +1,3 @@
-/**
- * Table column definitions for tenants list
- */
 
 "use client";
 
@@ -123,7 +120,7 @@ export function createTenantsColumns({
         const tenant = row.original;
         return (
           <div className="flex items-center gap-2">
-            {/* View Button */}
+
             <Button
               variant="outline"
               size="sm"
@@ -134,7 +131,6 @@ export function createTenantsColumns({
               <EyeIcon className="h-4 w-4" />
             </Button>
 
-            {/* Edit Button */}
             <Button
               variant="outline"
               size="sm"
@@ -145,7 +141,7 @@ export function createTenantsColumns({
               <PencilIcon className="h-4 w-4" />
             </Button>
 
-            {/* Mark Payment Button */}
+
             <Button
               variant="outline"
               size="sm"
@@ -157,7 +153,6 @@ export function createTenantsColumns({
               <span className="text-xs font-medium">Pay</span>
             </Button>
 
-            {/* Toggle Status Button */}
             <Button
               variant="outline"
               size="sm"

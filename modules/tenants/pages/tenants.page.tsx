@@ -1,6 +1,3 @@
-/**
- * Tenants management page
- */
 
 "use client";
 
@@ -24,13 +21,6 @@ export function TenantsPage() {
   const { data: saasPlans = [], isLoading: isLoadingPlans } = useActiveSaasPlans();
   const toggleStatus = useToggleTenantStatus();
   const { toast } = useToast();
-
-  // Debug
-  console.log('Tenants:', tenants);
-  console.log('SaaS Plans:', saasPlans);
-  console.log('Loading Plans:', isLoadingPlans);
-
-  // Modal states
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -38,7 +28,6 @@ export function TenantsPage() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<{ tenant: Tenant; action: 'activate' | 'deactivate' } | null>(null);
 
-  // Handlers
   function handleView(tenant: Tenant) {
     router.push(`/tenants/${tenant.id}`);
   }
@@ -87,7 +76,6 @@ export function TenantsPage() {
     }
   }
 
-  // Create columns with handlers
   const columns = createTenantsColumns({
     onView: handleView,
     onEdit: handleEdit,
@@ -98,7 +86,6 @@ export function TenantsPage() {
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      {/* Header with breadcrumb-like context */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">
@@ -110,7 +97,7 @@ export function TenantsPage() {
         </div>
       </div>
 
-      {/* Stats bar */}
+
       <div className="flex items-center justify-between border-b border-border/40 pb-4">
         <div className="flex items-center gap-3">
           <div className="rounded-lg bg-[#fe6b24]/10 p-2">
@@ -133,7 +120,7 @@ export function TenantsPage() {
           </div>
         </div>
         
-        {/* Result counter with icon */}
+
         <div className="flex items-center gap-2 text-sm text-gray-400">
           {isLoading ? (
             <Skeleton className="h-5 w-28 bg-gray-700/50" />
@@ -161,7 +148,6 @@ export function TenantsPage() {
         </div>
       </div>
 
-      {/* Table */}
       <DataTable
         columns={columns}
         data={tenants}
@@ -172,7 +158,7 @@ export function TenantsPage() {
         emptyDescription="Los tenants registrados aparecerán aquí"
       />
 
-      {/* Modals */}
+
       <TenantDetailModal
         tenant={selectedTenant}
         isOpen={isViewOpen}
@@ -200,7 +186,6 @@ export function TenantsPage() {
         }}
       />
 
-      {/* Confirmation Modal for Status Toggle */}
       {pendingAction && (
         <ConfirmationModal
           open={isConfirmOpen}

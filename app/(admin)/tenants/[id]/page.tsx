@@ -1,6 +1,3 @@
-/**
- * Tenant Details Page Route
- */
 
 import { TenantDetailsPage } from "@/modules/tenants/pages/tenant-details.page";
 

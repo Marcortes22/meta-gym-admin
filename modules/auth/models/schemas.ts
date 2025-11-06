@@ -1,12 +1,11 @@
 import { z } from 'zod';
 
-// Schema para Login
 export const loginSchema = z.object({
-  email: z.string().min(1, 'Email es requerido').email('Email debe ser válido'),
+  email: z.string().min(1, 'Email is required').email('Email must be valid'),
   password: z
     .string()
-    .min(1, 'Contraseña es requerida')
-    .min(4, 'Contraseña debe tener al menos 4 caracteres'),
+    .min(1, 'Password is required')
+    .min(4, 'Password must be at least 4 characters'),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
@@ -15,20 +14,20 @@ export const registerSchema = z
   .object({
     name: z
       .string()
-      .min(1, 'Nombre es requerido')
-      .min(2, 'Nombre debe tener al menos 2 caracteres'),
+      .min(1, 'Name is required')
+      .min(2, 'Name must be at least 2 characters'),
     email: z
       .string()
-      .min(1, 'Email es requerido')
-      .email('Email debe ser válido'),
+      .min(1, 'Email is required')
+      .email('Email must be valid'),
     password: z
       .string()
-      .min(1, 'Contraseña es requerida')
-      .min(4, 'Contraseña debe tener al menos 4 caracteres'),
-    confirmPassword: z.string().min(1, 'Confirmar contraseña es requerido'),
+      .min(1, 'Password is required')
+      .min(4, 'Password must be at least 4 characters'),
+    confirmPassword: z.string().min(1, 'Confirm password is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Las contraseñas no coinciden',
+    message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
 

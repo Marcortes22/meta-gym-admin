@@ -1,6 +1,3 @@
-/**
- * Payment History Table Component
- */
 
 "use client";
 
@@ -43,7 +40,7 @@ export function PaymentHistoryTable({ payments }: PaymentHistoryTableProps) {
               key={payment.id}
               className="hover:bg-gray-800/50 transition-colors"
             >
-              {/* Date */}
+
               <td className="py-4 px-4">
                 <p className="text-white">
                   {payment.paidAt
@@ -54,14 +51,13 @@ export function PaymentHistoryTable({ payments }: PaymentHistoryTableProps) {
                 </p>
               </td>
 
-              {/* Amount */}
               <td className="py-4 px-4">
                 <p className="font-semibold text-white">
                   ${payment.amount.toFixed(2)}
                 </p>
               </td>
 
-              {/* Status */}
+
               <td className="py-4 px-4">
                 {payment.hasPaid ? (
                   <Badge className="bg-green-500/10 text-green-400 border-green-500/30 hover:bg-green-500/20">

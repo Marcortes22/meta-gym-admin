@@ -1,35 +1,30 @@
 import { z } from 'zod';
 
-/**
- * Schema de validación para aprobar una solicitud
- */
 export const approveRequestSchema = z.object({
   adminEmail: z
     .string()
-    .min(1, 'El correo electrónico es requerido')
-    .email('Debe ser un correo electrónico válido'),
+    .min(1, 'Email is required')
+    .email('Must be a valid email'),
   adminPassword: z
     .string()
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
-    .max(100, 'La contraseña es demasiado larga'),
+    .min(6, 'Password must be at least 6 characters')
+    .max(100, 'Password is too long'),
   confirmPassword: z
     .string()
-    .min(1, 'Por favor confirme la contraseña'),
+    .min(1, 'Please confirm password'),
 }).refine((data) => data.adminPassword === data.confirmPassword, {
-  message: 'Las contraseñas no coinciden',
+  message: 'Passwords do not match',
   path: ['confirmPassword'],
 });
 
 export type ApproveRequestFormData = z.infer<typeof approveRequestSchema>;
 
-/**
- * Schema de validación para rechazar una solicitud
- */
+
 export const rejectRequestSchema = z.object({
   rejectionReason: z
     .string()
-    .min(10, 'La razón debe tener al menos 10 caracteres')
-    .max(500, 'La razón es demasiado larga'),
+    .min(10, 'Reason must be at least 10 characters')
+    .max(500, 'Reason is too long'),
 });
 
 export type RejectRequestFormData = z.infer<typeof rejectRequestSchema>;

@@ -1,6 +1,4 @@
-/**
- * Modal for marking payment and extending subscription
- */
+
 
 "use client";
 
@@ -46,12 +44,8 @@ export function MarkPaymentModal({
   const { toast } = useToast();
   const [amount, setAmount] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
-
-  // Get plan price when tenant or plans change
   const currentPlan = tenant ? saasPlans.find(p => p.id === tenant.currentPlanId) : null;
   const planPrice = currentPlan?.price || 0;
-
-  // Set default amount when modal opens with tenant data
   if (tenant && !amount && planPrice > 0) {
     setAmount(planPrice.toString());
   }
@@ -59,7 +53,6 @@ export function MarkPaymentModal({
   async function handleConfirm() {
     if (!tenant) return;
 
-    // Validate amount
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
       toast({
@@ -83,7 +76,7 @@ export function MarkPaymentModal({
         description: `Subscription for "${tenant.companyName}" extended until ${format(updatedDate, "MMMM dd, yyyy")}.`,
       });
 
-      // Reset form
+
       setAmount("");
       setNotes("");
       onClose();
@@ -108,7 +101,6 @@ export function MarkPaymentModal({
 
   if (!tenant) return null;
 
-  // Calculate new end date (current + 30 days)
   const currentEndDate = new Date(tenant.subscriptionEndDate);
   const projectedNewDate = new Date(currentEndDate);
   projectedNewDate.setDate(projectedNewDate.getDate() + 30);
@@ -125,7 +117,7 @@ export function MarkPaymentModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto pr-2 space-y-4">{/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto pr-2 space-y-4 details-scrollbar">
 
           {/* Tenant Info */}
           <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
@@ -153,7 +145,7 @@ export function MarkPaymentModal({
             </div>
           </div>
 
-          {/* Payment Amount */}
+    
           <div className="space-y-2">
             <Label htmlFor="amount" className="text-sm font-medium text-white">
               Payment Amount *
@@ -162,19 +154,20 @@ export function MarkPaymentModal({
               <DollarSignIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
                 id="amount"
-                type="number"
-                step="0.01"
-                min="0"
+                type="text"
                 placeholder="0.00"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="pl-9 bg-gray-900 border-gray-700 text-white placeholder:text-gray-500"
-                disabled={extendSubscription.isPending}
+                readOnly
+                className="pl-9 bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 cursor-not-allowed"
+                disabled
               />
             </div>
+            <p className="text-xs text-gray-500">
+              Amount is automatically set based on the current plan price
+            </p>
           </div>
 
-          {/* Notes */}
+
           <div className="space-y-2">
             <Label htmlFor="notes" className="text-sm font-medium text-white">
               Notes (Optional)
@@ -193,7 +186,6 @@ export function MarkPaymentModal({
             </p>
           </div>
 
-          {/* Current vs New Date */}
           <div className="space-y-3">
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
@@ -224,7 +216,7 @@ export function MarkPaymentModal({
             </div>
           </div>
 
-          {/* Warning */}
+
           <Alert className="bg-blue-500/10 border-blue-500/30">
             <AlertTriangleIcon className="h-4 w-4 text-blue-400" />
             <AlertDescription className="text-blue-400 text-sm">
@@ -233,7 +225,6 @@ export function MarkPaymentModal({
             </AlertDescription>
           </Alert>
 
-          {/* Error Display */}
           {extendSubscription.isError && (
             <Alert className="bg-red-500/10 border-red-500/30">
               <AlertDescription className="text-red-400">
@@ -245,14 +236,13 @@ export function MarkPaymentModal({
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex justify-end gap-3 pt-4 border-t border-gray-800 shrink-0">
           <Button
             type="button"
             variant="outline"
             onClick={handleClose}
             disabled={extendSubscription.isPending}
-            className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+            className="border-gray-400 bg-transparent text-gray-100 hover:bg-gray-700 hover:border-gray-300 hover:text-white transition-colors"
           >
             Cancel
           </Button>

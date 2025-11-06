@@ -129,3 +129,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom scrollbars for modal detail panes */
+.details-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+.details-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.details-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.details-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.10);
+  border-radius: 9999px;
+  border: 2px solid rgba(15,15,16,0.6); /* blends with modal background */
+}
+.details-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255,255,255,0.16);
+}
+.details-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}

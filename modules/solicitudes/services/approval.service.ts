@@ -13,18 +13,18 @@ import { GymRequest, UserRole } from '@/shared/types';
 import { sendCredentialsEmail } from './email.service';
 
 /**
- * Input para aprobar una solicitud de gimnasio
+ * Input for approving a gym request
  */
 export interface ApproveGymRequestInput {
   requestId: string;
   request: GymRequest;
   adminEmail: string;
   adminPassword: string;
-  reviewedBy: string; // UID del admin que aprueba
+  reviewedBy: string; // UID of approving admin
 }
 
 /**
- * Resultado del proceso de aprobación
+ * Result of the approval process
  */
 export interface ApproveGymRequestResult {
   success: boolean;
@@ -35,7 +35,7 @@ export interface ApproveGymRequestResult {
 }
 
 /**
- * Calcular la fecha de fin de suscripción (30 días desde hoy)
+ * Calculate subscription end date (30 days from today)
  */
 function calculateSubscriptionEndDate(): Date {
   const endDate = new Date();
@@ -44,23 +44,21 @@ function calculateSubscriptionEndDate(): Date {
 }
 
 /**
- * Mapear el plan de la solicitud al plan del tenant
- * GymRequest usa: basic_plan, professional_plan, enterprise_plan
- * Tenant usa: basic_plan, standard_plan, premium_plan, enterprise_plan
+ * Map request plan to tenant plan
  */
 function mapRequestPlanToTenantPlan(
   requestPlan: 'basic_plan' | 'professional_plan' | 'enterprise_plan'
 ): 'basic_plan' | 'standard_plan' | 'premium_plan' | 'enterprise_plan' {
   const planMap: Record<string, 'basic_plan' | 'standard_plan' | 'premium_plan' | 'enterprise_plan'> = {
     basic_plan: 'basic_plan',
-    professional_plan: 'premium_plan', // Mapear professional a premium
+    professional_plan: 'premium_plan', 
     enterprise_plan: 'enterprise_plan',
   };
   return planMap[requestPlan] || 'basic_plan';
 }
 
 /**
- * Obtener el precio del plan
+ * Get plan price
  */
 function getPlanPrice(planId: string): number {
   const prices: Record<string, number> = {
@@ -72,15 +70,15 @@ function getPlanPrice(planId: string): number {
 }
 
 /**
- * Servicio principal para aprobar una solicitud de gimnasio
+ * Main service for approving a gym request
  * 
- * Proceso:
- * 1. Crear usuario en Firebase Auth
- * 2. Crear documento en users con rol de admin
- * 3. Crear tenant
- * 4. Crear subscription
- * 5. Crear gym
- * 6. Actualizar la solicitud con estado approved
+ * Process:
+ * 1. Create user in Firebase Auth
+ * 2. Create document in users with admin role
+ * 3. Create tenant
+ * 4. Create subscription
+ * 5. Create gym
+ * 6. Update request with approved status
  */
 export async function approveGymRequestService(
   input: ApproveGymRequestInput
@@ -88,18 +86,18 @@ export async function approveGymRequestService(
   const { requestId, request, adminEmail, adminPassword, reviewedBy } = input;
 
   try {
-    // PASO 1: Crear usuario en Firebase Auth
-    console.log('🔐 Creando usuario en Firebase Auth...');
+    // STEP 1: Create user in Firebase Auth
+    console.log('🔐 Creating user in Firebase Auth...');
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       adminEmail,
       adminPassword
     );
     const userId = userCredential.user.uid;
-    console.log('✅ Usuario Auth creado:', userId);
+    console.log('✅ Auth user created:', userId);
 
-    // PASO 2: Crear tenant
-    console.log('🏢 Creando tenant...');
+    // STEP 2: Create tenant
+    console.log('🏢 Creating tenant...');
     const tenantId = generateTenantId();
     const subscriptionEndDate = calculateSubscriptionEndDate();
     
@@ -113,10 +111,10 @@ export async function approveGymRequestService(
       subscriptionEndDate,
       is_active: true,
     });
-    console.log('✅ Tenant creado:', tenantId);
+    console.log('✅ Tenant created:', tenantId);
 
-    // PASO 3: Crear subscription
-    console.log('💳 Creando suscripción...');
+    // STEP 3: Create subscription
+    console.log('💳 Creating subscription...');
     const now = new Date();
     const subscriptionId = await createSubscription({
       tenantId,
@@ -128,10 +126,10 @@ export async function approveGymRequestService(
       paymentAmount: getPlanPrice(request.requested_plan),
       autoRenew: true,
     });
-    console.log('✅ Suscripción creada:', subscriptionId);
+    console.log('✅ Subscription created:', subscriptionId);
 
-    // PASO 4: Crear gym
-    console.log('🏋️ Creando gimnasio...');
+    // STEP 4: Create gym
+    console.log('🏋️ Creating gym...');
     const gymCode = generateGymCode();
     const gymId = await createGym({
       tenantId,
@@ -141,16 +139,16 @@ export async function approveGymRequestService(
       email: adminEmail,
       phone: request.gym_phone,
       address: request.gym_address,
-      city: 'N/A', // No está en la solicitud
-      country: 'N/A', // No está en la solicitud
+      city: 'N/A', 
+      country: 'N/A', 
       is_active: true,
     });
-    console.log('✅ Gimnasio creado:', gymId);
+    console.log('✅ Gym created:', gymId);
 
-    // PASO 5: Crear usuario en colección users con rol admin
-    console.log('👤 Creando usuario admin...');
+    // STEP 5: Create user in users collection with admin role
+    console.log('👤 Creating admin user...');
     const adminRoles: UserRole[] = [
-      { id: 'own', name: 'Administrador' }
+      { id: 'own', name: 'Administrator' }
     ];
 
     await createAdminUser({
@@ -165,21 +163,21 @@ export async function approveGymRequestService(
       gymId: gymId,
       tenantId: tenantId,
     });
-    console.log('✅ Usuario admin creado en users collection');
+    console.log('✅ Admin user created in users collection');
 
-    // PASO 6: Actualizar la solicitud a "approved"
-    console.log('📝 Actualizando solicitud...');
+    // STEP 6: Update request to "approved"
+    console.log('📝 Updating request...');
     const requestRef = doc(db, 'register_requests', requestId);
     await updateDoc(requestRef, {
       state: 'approved',
       reviewedBy,
       reviewedAt: serverTimestamp(),
-      generatedToken: tenantId, // Usar tenantId como token
+      generatedToken: tenantId, 
     });
-    console.log('✅ Solicitud actualizada a approved');
+    console.log('✅ Request updated to approved');
 
-    // PASO 7: Enviar correo con credenciales
-    console.log('📧 Enviando correo con credenciales...');
+    // STEP 7: Send email with credentials
+    console.log('📧 Sending email with credentials...');
     await sendCredentialsEmail({
       toEmail: request.email,
       toName: `${request.admin_name} ${request.admin_surname1}`,
@@ -188,21 +186,21 @@ export async function approveGymRequestService(
       password: adminPassword,
       tenantId,
     });
-    console.log('✅ Correo enviado');
+    console.log('✅ Email sent');
 
     return {
       success: true,
       tenantId,
       gymId,
       userId,
-      message: `Solicitud aprobada exitosamente. Tenant: ${tenantId}, Gym: ${gymCode}`,
+      message: `Request approved successfully. Tenant: ${tenantId}, Gym: ${gymCode}`,
     };
   } catch (error) {
-    console.error('❌ Error al aprobar solicitud:', error);
+    console.error('❌ Error approving request:', error);
     throw new Error(
       error instanceof Error
-        ? `Error al aprobar solicitud: ${error.message}`
-        : 'Error desconocido al aprobar solicitud'
+        ? `Error approving request: ${error.message}`
+        : 'Unknown error approving request'
     );
   }
 }

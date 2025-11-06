@@ -37,7 +37,7 @@ export function GymRequestDetailsDialog({
 }: GymRequestDetailsDialogProps) {
   const [reviewerName, setReviewerName] = useState<string | null>(null);
 
-  // Fetch reviewer name when request changes
+
   useEffect(() => {
     async function fetchReviewerName() {
       if (request?.reviewedBy) {
@@ -71,7 +71,7 @@ export function GymRequestDetailsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
+  <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 details-scrollbar">
           {/* Status Badge */}
           <div className="flex items-center justify-between pb-4 border-b border-gray-800">
             <span className="text-sm font-medium text-gray-400">Status</span>
@@ -80,7 +80,6 @@ export function GymRequestDetailsDialog({
             </Badge>
           </div>
 
-          {/* Request ID */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
               Request ID
@@ -90,7 +89,7 @@ export function GymRequestDetailsDialog({
             </p>
           </div>
 
-          {/* Gym Information */}
+
           <div className="space-y-4 p-5 bg-[#1a1a1b] rounded-lg border border-gray-800 shadow-sm">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-[#fe6b24]/10 rounded-lg">
@@ -129,7 +128,7 @@ export function GymRequestDetailsDialog({
             </div>
           </div>
 
-          {/* Admin Information */}
+
           <div className="space-y-4 p-5 bg-[#1a1a1b] rounded-lg border border-gray-800 shadow-sm">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-[#fe6b24]/10 rounded-lg">
@@ -158,7 +157,6 @@ export function GymRequestDetailsDialog({
             </div>
           </div>
 
-          {/* Date Information */}
           <div className="space-y-4 p-5 bg-[#1a1a1b] rounded-lg border border-gray-800 shadow-sm">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-[#fe6b24]/10 rounded-lg">
@@ -204,7 +202,6 @@ export function GymRequestDetailsDialog({
             </div>
           </div>
 
-          {/* Rejection Reason (if rejected) */}
           {request.state === 'rejected' && request.rejectionReason && (
             <div className="space-y-3 p-5 bg-red-500/10 rounded-lg border border-red-500/30 shadow-sm">
               <div className="flex items-center gap-2">

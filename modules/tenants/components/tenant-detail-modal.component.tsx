@@ -1,6 +1,3 @@
-/**
- * Tenant detail view modal component
- */
 
 "use client";
 
@@ -52,32 +49,31 @@ export function TenantDetailModal({
     <DetailModal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Detalles del Tenant ${formatTenantCode(tenant.id)}`}
-      description="Información completa del tenant"
+      title={`Tenant Details ${formatTenantCode(tenant.id)}`}
+      description="Complete tenant information"
     >
-      {/* Company Information */}
-      <DetailSection title="Información de la Empresa">
+
+      <DetailSection title="Company Information">
         <DetailField
-          label="Nombre de la Empresa"
+          label="Company Name"
           value={tenant.companyName}
           icon={<BuildingIcon className="h-5 w-5" />}
         />
         <DetailField
-          label="Email de la Empresa"
+          label="Company Email"
           value={tenant.companyEmail}
           icon={<MailIcon className="h-5 w-5" />}
         />
         <DetailField
-          label="Teléfono de la Empresa"
+          label="Company Phone"
           value={tenant.companyPhone}
           icon={<PhoneIcon className="h-5 w-5" />}
         />
       </DetailSection>
 
-      {/* Subscription Information */}
-      <DetailSection title="Información de Suscripción">
+      <DetailSection title="Subscription Information">
         <DetailField
-          label="Plan Actual"
+          label="Current Plan"
           value={
             <div className="flex items-center gap-2">
               <Badge
@@ -87,14 +83,14 @@ export function TenantDetailModal({
                 {getPlanName(tenant.currentPlanId, saasPlans)}
               </Badge>
               <span className="text-sm text-gray-400">
-                ${getPlanPrice(tenant.currentPlanId, saasPlans).toFixed(2)}/mes
+                ${getPlanPrice(tenant.currentPlanId, saasPlans).toFixed(2)}/month
               </span>
             </div>
           }
           icon={<CreditCardIcon className="h-5 w-5" />}
         />
         <DetailField
-          label="Fecha de Vencimiento"
+          label="Expiration Date"
           value={
             <div className="flex items-center gap-2">
               <span>
@@ -111,20 +107,20 @@ export function TenantDetailModal({
         />
       </DetailSection>
 
-      {/* System Information */}
-      <DetailSection title="Información del Sistema">
+
+      <DetailSection title="System Information">
         <DetailField
-          label="ID del Tenant"
+          label="Tenant ID"
           value={<span className="font-mono text-sm">{tenant.id}</span>}
           icon={<ShieldCheckIcon className="h-5 w-5" />}
         />
         <DetailField
-          label="ID del Propietario"
+          label="Owner ID"
           value={<span className="font-mono text-sm">{tenant.ownerId}</span>}
           icon={<UserIcon className="h-5 w-5" />}
         />
         <DetailField
-          label="Estado"
+          label="Status"
           value={
             <Badge
               variant="outline"
@@ -134,12 +130,12 @@ export function TenantDetailModal({
                   : "bg-red-500/10 text-red-400 border-red-500/30"
               }
             >
-              {tenant.is_active ? "Activo" : "Inactivo"}
+              {tenant.is_active ? "Active" : "Inactive"}
             </Badge>
           }
         />
         <DetailField
-          label="Fecha de Creación"
+          label="Creation Date"
           value={format(tenant.createdAt, "dd 'de' MMMM, yyyy 'a las' HH:mm", {
             locale: es,
           })}

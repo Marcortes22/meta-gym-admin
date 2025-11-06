@@ -1,6 +1,4 @@
-/**
- * TanStack Query hooks for tenant management
- */
+
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UpdateTenantInput } from "@/shared/types/tenant.types";
@@ -17,9 +15,7 @@ import {
   fetchAllSaasPlans,
 } from "../queries/saas-plans.queries";
 
-/**
- * Query keys for tenant operations
- */
+
 export const tenantKeys = {
   all: ["tenants"] as const,
   lists: () => [...tenantKeys.all, "list"] as const,
@@ -29,17 +25,13 @@ export const tenantKeys = {
   active: () => [...tenantKeys.all, "active"] as const,
 };
 
-/**
- * Query keys for SaaS plans
- */
+
 export const saasPlansKeys = {
   all: ["saas_plans"] as const,
   active: () => [...saasPlansKeys.all, "active"] as const,
 };
 
-/**
- * Hook to fetch all tenants
- */
+
 export function useTenants() {
   return useQuery({
     queryKey: tenantKeys.lists(),
@@ -47,9 +39,7 @@ export function useTenants() {
   });
 }
 
-/**
- * Hook to fetch active tenants
- */
+
 export function useActiveTenants() {
   return useQuery({
     queryKey: tenantKeys.active(),
@@ -57,9 +47,6 @@ export function useActiveTenants() {
   });
 }
 
-/**
- * Hook to fetch a single tenant
- */
 export function useTenant(id: string) {
   return useQuery({
     queryKey: tenantKeys.detail(id),
@@ -68,9 +55,7 @@ export function useTenant(id: string) {
   });
 }
 
-/**
- * Hook to update tenant information
- */
+
 export function useUpdateTenant() {
   const queryClient = useQueryClient();
 
@@ -83,9 +68,7 @@ export function useUpdateTenant() {
   });
 }
 
-/**
- * Hook to extend tenant subscription
- */
+
 export function useExtendSubscription() {
   const queryClient = useQueryClient();
 
@@ -99,24 +82,18 @@ export function useExtendSubscription() {
   });
 }
 
-/**
- * Hook to toggle tenant active status
- */
 export function useToggleTenantStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (tenantId: string) => toggleTenantStatus(tenantId),
     onSuccess: () => {
-      // Invalidate tenant queries to refetch updated data
       queryClient.invalidateQueries({ queryKey: tenantKeys.all });
     },
   });
 }
 
-/**
- * Hook to fetch active SaaS plans
- */
+
 export function useActiveSaasPlans() {
   return useQuery({
     queryKey: saasPlansKeys.active(),
@@ -124,9 +101,7 @@ export function useActiveSaasPlans() {
   });
 }
 
-/**
- * Hook to fetch all SaaS plans
- */
+
 export function useAllSaasPlans() {
   return useQuery({
     queryKey: saasPlansKeys.all,

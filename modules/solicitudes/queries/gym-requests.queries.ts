@@ -16,13 +16,11 @@ import {
 } from 'firebase/firestore';
 import { GymRequest, GymRequestFilters } from '@/shared/types';
 
-/**
- * Nombre de la colección en Firestore
- */
+
 const GYM_REQUESTS_COLLECTION = 'register_requests';
 
 /**
- * Convierte un documento de Firestore a GymRequest
+ * Convierte un documento a GymRequest
  */
 function mapDocToGymRequest(doc: DocumentData): GymRequest {
   const data = doc.data();
@@ -64,12 +62,10 @@ export async function getAllGymRequests(): Promise<GymRequest[]> {
 
 /**
  * Obtiene solicitudes por estado
- * Nota: Filtra en el cliente para evitar necesidad de índices compuestos en Firestore
  */
 export async function getGymRequestsByState(
   state: GymRequest['state']
 ): Promise<GymRequest[]> {
-  // Obtener todas las solicitudes y filtrar en el cliente
   const allRequests = await getAllGymRequests();
   return allRequests.filter(request => request.state === state);
 }

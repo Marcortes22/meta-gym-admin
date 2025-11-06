@@ -65,8 +65,8 @@ export function ConfirmationModal({
   onOpenChange,
   title,
   description,
-  confirmText = 'Confirmar',
-  cancelText = 'Cancelar',
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   variant = 'warning',
   onConfirm,
   isLoading = false,
@@ -115,7 +115,7 @@ export function ConfirmationModal({
             disabled={isLoading}
             className={`flex-1 ${config.buttonClass}`}
           >
-            {isLoading ? 'Procesando...' : confirmText}
+            {isLoading ? 'Processing...' : confirmText}
           </Button>
         </DialogFooter>
       </DialogContent>

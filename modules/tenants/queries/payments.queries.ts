@@ -21,23 +21,20 @@ import {
 const PAYMENTS_COLLECTION = 'subscription_payments';
 const TENANTS_COLLECTION = 'tenants';
 
-/**
- * Validar input de pago
- */
+
 export function validatePaymentInput(input: CreatePaymentInput): PaymentValidationResult {
   const errors: string[] = [];
 
-  // Validar tenantId
+
   if (!input.tenantId || input.tenantId.trim() === '') {
     errors.push('Tenant ID is required');
   }
 
-  // Validar subscriptionId
   if (!input.subscriptionId || input.subscriptionId.trim() === '') {
     errors.push('Subscription ID is required');
   }
 
-  // Validar amount
+
   if (input.amount <= 0) {
     errors.push('Amount must be greater than 0');
   }
@@ -46,7 +43,6 @@ export function validatePaymentInput(input: CreatePaymentInput): PaymentValidati
     errors.push('Amount must be a valid number');
   }
 
-  // Validar fechas
   if (!(input.periodStart instanceof Date) || isNaN(input.periodStart.getTime())) {
     errors.push('Period start date is invalid');
   }
@@ -55,25 +51,24 @@ export function validatePaymentInput(input: CreatePaymentInput): PaymentValidati
     errors.push('Period end date is invalid');
   }
 
-  // Validar que periodEnd sea después de periodStart
   if (input.periodStart >= input.periodEnd) {
     errors.push('Period end date must be after period start date');
   }
 
-  // Validar que periodStart no sea en el futuro lejano (más de 1 año)
+
   const oneYearFromNow = new Date();
   oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
   if (input.periodStart > oneYearFromNow) {
     errors.push('Period start date cannot be more than 1 year in the future');
   }
 
-  // Validar que el período no sea mayor a 1 año
+
   const periodDays = (input.periodEnd.getTime() - input.periodStart.getTime()) / (1000 * 60 * 60 * 24);
   if (periodDays > 365) {
     errors.push('Payment period cannot exceed 365 days');
   }
 
-  // Validar notas (opcional)
+
   if (input.notes && input.notes.length > 500) {
     errors.push('Notes cannot exceed 500 characters');
   }
@@ -84,9 +79,7 @@ export function validatePaymentInput(input: CreatePaymentInput): PaymentValidati
   };
 }
 
-/**
- * Verificar que el tenant existe
- */
+
 async function validateTenantExists(tenantId: string): Promise<boolean> {
   try {
     const tenantRef = doc(db, TENANTS_COLLECTION, tenantId);
@@ -98,17 +91,13 @@ async function validateTenantExists(tenantId: string): Promise<boolean> {
   }
 }
 
-/**
- * Crear un registro de pago
- */
+
 export async function createPaymentRecord(input: CreatePaymentInput): Promise<string> {
-  // Validar input
   const validation = validatePaymentInput(input);
   if (!validation.isValid) {
     throw new Error(`Payment validation failed: ${validation.errors.join(', ')}`);
   }
 
-  // Verificar que el tenant existe
   const tenantExists = await validateTenantExists(input.tenantId);
   if (!tenantExists) {
     throw new Error(`Tenant ${input.tenantId} not found`);
@@ -117,7 +106,6 @@ export async function createPaymentRecord(input: CreatePaymentInput): Promise<st
   const now = new Date();
 
   try {
-    // Crear el registro de pago
     const paymentsRef = collection(db, PAYMENTS_COLLECTION);
     const paymentDoc = await addDoc(paymentsRef, {
       tenantId: input.tenantId,
@@ -145,28 +133,21 @@ export async function createPaymentRecord(input: CreatePaymentInput): Promise<st
   }
 }
 
-/**
- * Obtener historial de pagos de un tenant
- */
+
 export async function getPaymentsByTenant(tenantId: string): Promise<SubscriptionPayment[]> {
   try {
-    console.log('🔍 [getPaymentsByTenant] Fetching payments for tenant:', tenantId);
-    
+
+  
     const paymentsRef = collection(db, PAYMENTS_COLLECTION);
-    // Remove orderBy to avoid composite index requirement
     const q = query(
       paymentsRef,
       where('tenantId', '==', tenantId)
     );
 
-    console.log('📦 [getPaymentsByTenant] Query created');
     const snapshot = await getDocs(q);
-    console.log('📊 [getPaymentsByTenant] Documents found:', snapshot.size);
-
     const payments = snapshot.docs.map(doc => {
       const data = doc.data();
-      console.log('📄 [getPaymentsByTenant] Document:', doc.id, data);
-      
+
       return {
         id: doc.id,
         tenantId: data.tenantId,
@@ -182,17 +163,15 @@ export async function getPaymentsByTenant(tenantId: string): Promise<Subscriptio
       } as SubscriptionPayment;
     });
 
-    // Sort by date in JavaScript (most recent first)
     payments.sort((a, b) => {
       const dateA = a.paidAt || a.createdAt || new Date(0);
       const dateB = b.paidAt || b.createdAt || new Date(0);
       return dateB.getTime() - dateA.getTime();
     });
 
-    console.log('✅ [getPaymentsByTenant] Total payments:', payments.length);
+
     return payments;
   } catch (error) {
-    console.error('❌ [getPaymentsByTenant] Error fetching payments:', error);
     if (error instanceof Error) {
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
@@ -201,9 +180,7 @@ export async function getPaymentsByTenant(tenantId: string): Promise<Subscriptio
   }
 }
 
-/**
- * Obtener todos los pagos
- */
+
 export async function getAllPayments(): Promise<SubscriptionPayment[]> {
   try {
     const paymentsRef = collection(db, PAYMENTS_COLLECTION);
@@ -216,8 +193,6 @@ export async function getAllPayments(): Promise<SubscriptionPayment[]> {
       const periodEnd = data.periodEnd?.toDate();
       const hasPaid = data.hasPaid;
       const now = new Date();
-
-      // Calcular estado dinámicamente
       let status: 'active' | 'overdue' = 'active';
       if (!hasPaid && now > periodEnd) {
         status = 'overdue';

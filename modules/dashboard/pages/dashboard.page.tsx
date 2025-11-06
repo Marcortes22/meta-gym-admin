@@ -15,7 +15,6 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-[1600px] mx-auto">
-      {/* Header */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight text-white">
           Dashboard
@@ -25,9 +24,8 @@ export function DashboardPage() {
         </p>
       </div>
 
-      {/* Métricas principales */}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-        {/* Total Active Tenants */}
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-400 uppercase tracking-wide flex items-center gap-2">
@@ -49,8 +47,6 @@ export function DashboardPage() {
             )}
           </CardContent>
         </Card>
-
-        {/* Total Received Requests */}
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-400 uppercase tracking-wide flex items-center gap-2">
@@ -73,8 +69,6 @@ export function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Gráfica de crecimiento mensual */}
       {growthLoading ? (
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardContent className="pt-6">
@@ -84,10 +78,7 @@ export function DashboardPage() {
       ) : growthData && growthData.length > 0 ? (
         <MonthlyGrowthChart data={growthData} growthPercentage={growthPercentage} />
       ) : null}
-
-      {/* Desglose de solicitudes */}
       <div className="grid gap-4 md:grid-cols-3">
-        {/* Pending Requests */}
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-xs font-medium text-gray-400 uppercase tracking-wide flex items-center gap-2">
@@ -105,8 +96,6 @@ export function DashboardPage() {
             )}
           </CardContent>
         </Card>
-
-        {/* Approved Requests */}
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-xs font-medium text-gray-400 uppercase tracking-wide flex items-center gap-2">
@@ -124,8 +113,6 @@ export function DashboardPage() {
             )}
           </CardContent>
         </Card>
-
-        {/* Rejected Requests */}
         <Card className="bg-[#1a1a1b] border-gray-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-xs font-medium text-gray-400 uppercase tracking-wide flex items-center gap-2">
@@ -144,8 +131,6 @@ export function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Acciones rápidas */}
       <div className="grid gap-4 md:grid-cols-2">
         <a
           href="/tenants"
